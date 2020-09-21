@@ -1,4 +1,4 @@
-import React , {useState} from 'react';
+import React from 'react';
 import Fade from '@material-ui/core/Fade';
 import Popper from '@material-ui/core/Popper';
 import { withStyles } from '@material-ui/core/styles';
@@ -21,7 +21,6 @@ const styles = {
 };
 
 function DropdownMenu (props) {
-    console.log(props)
     const {classes, open, onClose, anchorEl, children, placement} = props;
 
     // const [dropdownMenu, setDropdownMenu] = useState(false);
