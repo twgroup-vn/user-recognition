@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/user-recognition/static/css/main.f0479ad2.chunk.css",
+    "main.js": "/user-recognition/static/js/main.fbfa2997.chunk.js",
+    "main.js.map": "/user-recognition/static/js/main.fbfa2997.chunk.js.map",
+    "runtime-main.js": "/user-recognition/static/js/runtime-main.9a3e4f2a.js",
+    "runtime-main.js.map": "/user-recognition/static/js/runtime-main.9a3e4f2a.js.map",
+    "static/js/2.ec3fd3fb.chunk.js": "/user-recognition/static/js/2.ec3fd3fb.chunk.js",
+    "static/js/2.ec3fd3fb.chunk.js.map": "/user-recognition/static/js/2.ec3fd3fb.chunk.js.map",
+    "index.html": "/user-recognition/index.html",
+    "precache-manifest.cd4232ee6409d85bb1353419b6ae15cf.js": "/user-recognition/precache-manifest.cd4232ee6409d85bb1353419b6ae15cf.js",
+    "service-worker.js": "/user-recognition/service-worker.js",
+    "static/css/main.f0479ad2.chunk.css.map": "/user-recognition/static/css/main.f0479ad2.chunk.css.map",
+    "static/js/2.ec3fd3fb.chunk.js.LICENSE.txt": "/user-recognition/static/js/2.ec3fd3fb.chunk.js.LICENSE.txt",
+    "static/media/logo-twg.svg": "/user-recognition/static/media/logo-twg.69a2ae22.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.9a3e4f2a.js",
+    "static/js/2.ec3fd3fb.chunk.js",
+    "static/css/main.f0479ad2.chunk.css",
+    "static/js/main.fbfa2997.chunk.js"
+  ]
+}
