@@ -1,6 +1,6 @@
 import closer_badge from '../images/badges/closer_badge.png';
 // import closer_badge_thumb from '../img/badges/thumb/closer_badge_thumb.png';
-// import creativity_badge from '../img/badges/creativity_badge.png';
+import creativity_badge from '../images/badges/creativity_badge.png';
 // import creativity_badge_thumb from '../img/badges/thumb/creativity_badge_thumb.png';
 import culture_badge from '../images/badges/culture_badge.png';
 // import culture_badge_thumb from '../img/badges/thumb/culture_badge_thumb.png';
@@ -110,8 +110,8 @@ export const getImageForBadge = (badge, thumb = false) => {
   switch (badge.name) {
     // case 'closer':
     //   return thumb ? closer_badge_thumb : closer_badge;
-    // case 'creativity':
-    //   return thumb ? creativity_badge_thumb : creativity_badge;
+    case 'creativity':
+      return creativity_badge;
     // case 'culture':
     //   return thumb ? culture_badge_thumb : culture_badge;
     // case 'detail_master':

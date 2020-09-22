@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 import { makeStyles } from '@material-ui/core/styles';
 import PostRecognition from '../components/PostRecognition';
 import InfoRecognition from '../components/InfoRecognition';
+import Feed from '../components/Feed';
 import TopReceivers from '../components/TopReceivers';
 import TopBadges from '../components/TopBadges';
 
@@ -27,12 +28,13 @@ function Home () {
     }
 
     const badgeSetStatus = true;//setting
-    const coreValueSetStatus = true;//setting
+    // const coreValueSetStatus = true;//setting
     return (
         <Container style={{marginTop: '35px'}}>
             <Row className='position-relative justify-content-start'>
                 <Col xs={6} md={6} lg={8}>
                     <PostRecognition />
+                    <Feed />
                 </Col>
                 <Col xs={6} md={6} lg={4} className={classes.fixed_right_panel}>
                     <InfoRecognition 
