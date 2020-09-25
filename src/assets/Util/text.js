@@ -1,7 +1,7 @@
 import React from 'react';
 import reactStringReplace from 'react-string-replace';
 import { Emoji } from 'emoji-mart';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 export const CASHOUT_TITLE_TEXT_MAX_LENGTH = 35;
 export const MENTION_REGEX = /@__(.*?)__@/;

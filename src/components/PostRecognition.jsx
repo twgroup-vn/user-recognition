@@ -2,25 +2,15 @@ import React, {useState} from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Input from '@material-ui/core/Input';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Chip from '@material-ui/core/Chip';
 import AdjustIcon from '@material-ui/icons/Adjust';
 import classNames from 'classnames';
-import { Avatar, IconButton, TextField, Tooltip, Button } from '@material-ui/core';
+import { IconButton, Tooltip, Button } from '@material-ui/core';
 import { titleize } from '../assets/Util/text';
 import EmojiIcon from '@material-ui/icons/InsertEmoticon';
 import CameraIcon from '@material-ui/icons/AddAPhoto';
 import GifIcon from '@material-ui/icons/Gif';
 import { getImageForBadge } from '../assets/Util/BadgesInfo';
-
-import BongCaiAva from '../assets/images/avatars/bongcai.png';
-import TamAva from '../assets/images/avatars/tam.png';
-import CamAva from '../assets/images/avatars/cam.png';
-import DigheAva from '../assets/images/avatars/dighe.png';
-
+import DSTypeAhead from './give-carrot/DSTypeAhead';
 
 const StyledTabs = withStyles({
     root: {
@@ -64,18 +54,6 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 0,
         marginRight: 0,
     },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-        maxWidth: 300,
-    },
-    chips: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    chip: {
-        margin: 2,
-    },
     iconButton: {
         color: '#9E9E9E',
         '&:hover': {
@@ -101,61 +79,22 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-
-const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
-
-const coworkers = [
-    {
-        avatar: BongCaiAva,
-        name: 'Bống Bống'
-    },
-    {
-        avatar: TamAva,
-        name: 'Tấm'
-    },
-    {
-        avatar: DigheAva,
-        name: 'Dì ghẻ'
-    },
-    {
-        avatar: CamAva,
-        name: 'Cám'
-    }
-];
-
-
-
 function PostRecognition () {
     const classes = useStyles();
-    const [value, setValue] = useState(0);
-    const [personName, setPersonName] = useState([]);
-    const [trophies, setTrophies]= useState(0);
-    const [selectedBadge, setSelectedBadge] = useState(null)
+    const [slideIndex, setSlideIndex] = useState(0);
+    const [selectedBadge, setSelectedBadge] = useState(null);
+    // const [selectedUsers, setSelectedUsers] = useState([]);
+    // const [ internalTourState, setInternalTourState] = useState(null);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const handleTabChange = (event, newValue) => {
+        setSlideIndex(newValue);
     };
-
-    const handleChangeName = (e) => {
-        setPersonName(e.target.value)
-    }
 
     // const canGivePoints = true;
 
      const badgeAttachability = true;
 
-    const handleDelete = () => {
-        alert("Deleted");
-    }
+    
 
     const getImageForBadgeIcon = () => {
 
@@ -173,14 +112,47 @@ function PostRecognition () {
         return 'Add Badge';
     };
 
+    const handleTypeAheadUsers = (selectedUsersProps) => {
+        // const { runHomeTour, canGivePoints } = this.props;
+        // const { tourStep } = this.state;
+        // if (runHomeTour && tourStep === TOUR_STEPS.SELECT_USER) {
+        // let nextStep = TOUR_STEPS.SELECT_CARROTS;
+        // if (!canGivePoints) nextStep = TOUR_STEPS.ADD_MESSAGE;
+        //     this.setState({
+        //         selectedUsers,
+        //         tourStep: nextStep,
+        //         internalTourState: null,
+        //     });
+        // }
+        // else {
+            // this.setState({ selectedUsers });
+        //}
+        //setSelectedUsers(selectedUsersProps);
+        // console.log(selectedUsersProps)
+    };
+
+    const onUserInputFocus = () => {
+        // const { runHomeTour } = this.props;
+        // const { internalTourState, tourStep } = this.state;
+        // if (runHomeTour && tourStep === TOUR_STEPS.SELECT_USER) {
+        //     if (internalTourState !== 'paused') {
+        //       setInternalTourState('pause')
+        //     }
+        // }
+    }
+
+    // const onUserInputBlur = () => {
+
+    // }
+
     return (
         <div className={classes.post_container}>
             <div style={{overflow: 'hidden', width: 'calc(100% - 1px)'}}>
                 <StyledTabs
                     centered
                     variant='fullWidth'
-                    value={value}
-                    onChange={handleChange}>
+                    value={slideIndex}
+                    onChange={handleTabChange}>
                     <StyledTab disableRipple label='Give Recognition' />
                 </StyledTabs>
             </div>
@@ -193,51 +165,13 @@ function PostRecognition () {
                             classes.input_row_style,
                         )}
                     >
-                        <div style={{width: '100%', display: 'flex', zIndex: '3', position: 'relative'}}>
-                            <div style={{width: '50px', height: '31px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                                <div style={{color: '#9e9e9e', filter: 'grayscale(1)', cursor: 'pointer', fontSize: '16px'}}>
-                                    <span role='img' aria-label='icon'>😎</span>
-                                </div>
-                            </div>
-                            <div style={{width: '100%'}}>
-                                <FormControl fullWidth>
-                                <Select
-                                // labelId="demo-mutiple-chip-label"
-                                // id="demo-mutiple-chip"
-                                    multiple
-                                    value={personName}
-                                    onChange={handleChangeName}
-                                    input={<Input />}
-                                    renderValue={(selected) => {
-                                        return (
-                                            <div className={classes.chips}>
-                                                {selected.map((value) => (
-                                                    <Chip 
-                                                        avatar={
-                                                            <Avatar alt='Natacha' src={value.avatar} />
-                                                        }
-                                                        key={value.name}
-                                                        label={value.name}
-                                                        className={classes.chip} 
-                                                        onDelete={handleDelete}
-                                                    />
-                                                ))}
-                                            </div>
-                                        )
-                                    }}
-                                    MenuProps={MenuProps}
-                                >
-                                    {coworkers.map((worker) => (
-                                        <MenuItem key={worker.name} value={worker}>
-                                            {worker.name}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                                </FormControl>
-                            </div>
-                        </div>
+                        <DSTypeAhead
+                            handleUsers={handleTypeAheadUsers}
+                            onFocus={onUserInputFocus}
+                            // onBlue={onUserInputBlur}
+                        />
                     </div>
-                    <div className={classNames(
+                    {/* <div className={classNames(
                             'row',
                             'shoutout-user-select',
                             classes.input_row_style,
@@ -262,7 +196,7 @@ function PostRecognition () {
                                     >
                                         {/* <MenuItem value="" disabled>
                                             <div style={{color: '#9e9e9e'}}>Add Trophies</div>
-                                        </MenuItem> */}
+                                        </MenuItem>
                                         <MenuItem value="10"><span role='img' aria-label='icon'>🙂</span> Add 10 Trophies</MenuItem>
                                         <MenuItem value="20"><span role='img' aria-label='icon'>😀</span> Add 20 Trophies</MenuItem>
                                         <MenuItem value="30"><span role='img' aria-label='icon'>👏</span> Add 30 Trophies</MenuItem>
@@ -272,8 +206,8 @@ function PostRecognition () {
                                 </FormControl>
                             </div>
                         </div>
-                    </div>
-                    <div className={classNames(
+                    </div> */}
+                    {/* <div className={classNames(
                             'row',
                             'shoutout-user-select',
                             classes.input_row_style,
@@ -291,7 +225,7 @@ function PostRecognition () {
                                 </FormControl>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="justify-content-end align-items-center" style={{display: 'flex', padding: 14}}>
                     <div style={{display: 'flex', justifyContent: 'flex-end'}}>
