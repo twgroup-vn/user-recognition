@@ -12,7 +12,7 @@ import detail_master_badge from '../images/badges/detail_master_badge.png';
 // import idea_maker_badge_thumb from '../img/badges/thumb/idea_maker_badge_thumb.png';
 // import initiative_badge from '../img/badges/initiative_badge.png';
 // import initiative_badge_thumb from '../img/badges/thumb/initiative_badge_thumb.png';
-// import innovator_badge from '../img/badges/innovator_badge.png';
+import innovator_badge from '../images/badges/innovator_badge.png';
 // import innovator_badge_thumb from '../img/badges/thumb/innovator_badge_thumb.png';
 // import launcher_badge from '../img/badges/launcher_badge.png';
 // import launcher_badge_thumb from '../img/badges/thumb/launcher_badge_thumb.png';
@@ -122,8 +122,8 @@ export const getImageForBadge = (badge, thumb = false) => {
     //   return thumb ? idea_maker_badge_thumb : idea_maker_badge;
     // case 'initiative':
     //   return thumb ? initiative_badge_thumb : initiative_badge;
-    // case 'innovator':
-    //   return thumb ? innovator_badge_thumb : innovator_badge;
+    case 'innovator':
+      return innovator_badge;
     // case 'launcher':
     //   return thumb ? launcher_badge_thumb : launcher_badge;
     // case 'leadership':

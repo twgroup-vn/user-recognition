@@ -33,7 +33,9 @@ function Home () {
         <Container style={{marginTop: '35px'}}>
             <Row className='position-relative justify-content-start'>
                 <Col xs={6} md={6} lg={8}>
-                    <PostRecognition />
+                    <PostRecognition
+                        switchBalanceTab={onHandleTabChange}
+                    />
                     <Feed />
                 </Col>
                 <Col xs={6} md={6} lg={4} className={classes.fixed_right_panel}>

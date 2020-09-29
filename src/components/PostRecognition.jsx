@@ -11,6 +11,9 @@ import CameraIcon from '@material-ui/icons/AddAPhoto';
 import GifIcon from '@material-ui/icons/Gif';
 import { getImageForBadge } from '../assets/Util/BadgesInfo';
 import DSTypeAhead from './give-carrot/DSTypeAhead';
+import ImpactValueSelector from './give-carrot/ImpactValueSelector';
+// import MessageInput from './give-carrot/MessageInput';
+import { EditorState, Modifier } from 'draft-js'; 
 
 const StyledTabs = withStyles({
     root: {
@@ -79,22 +82,79 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function PostRecognition () {
+const impactLevels = [
+    {
+        goldLimit: 10,
+        label: "🙂",
+        value: "small"
+    },
+    {
+        goldLimit: 20,
+        label: "😀",
+        value: "medium"
+    },
+    {
+        goldLimit: 30,
+        label: "👏",
+        value: "large"
+    },
+    {
+        goldLimit: 40,
+        label: "💪",
+        value: "huge"
+    },
+    {
+        goldLimit: 50,
+        label: "🚀",
+        value: "above"
+    }
+]
+function PostRecognition (props) {
     const classes = useStyles();
     const [slideIndex, setSlideIndex] = useState(0);
     const [selectedBadge, setSelectedBadge] = useState(null);
-    // const [selectedUsers, setSelectedUsers] = useState([]);
+    const [selectedUsers, setSelectedUsers] = useState([]);
+    const [carrots, setCarrots] = useState('');
+    const [impact, setImpact] = useState('');
+    const [carrotsTouched, setCarrotsTouched] = useState(false);
+    const [carrotError, setCarrotError] = useState(null);
     // const [ internalTourState, setInternalTourState] = useState(null);
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
+    const [messageError, setMessageError] = useState(null);
+    const [isMessageTipsVisible, setIsMessageTipsVisible] = useState(false);
+    const [selectedMentions, setSelectedMentions] = useState(new Set());
+
+
 
     const handleTabChange = (event, newValue) => {
         setSlideIndex(newValue);
     };
 
-    // const canGivePoints = true;
+    const canGivePoints = true;
+    const canGiveCustomAmount = false;
 
-     const badgeAttachability = true;
+    const badgeAttachability = true;
 
-    
+    const mePointsToGive = 200;
+
+    const carrotsPerPost = {
+        isSet: false,
+        value: 25
+    }
+
+    const customCurrency = {
+        NAME_PLURAL: "Trophies",
+        NAME_TITLEIZED: "Trophy",
+        NAME_TITLEIZED_PLURAL: "Trophies"
+    }
+
+    const customCompanyIcon = {
+        type: 'emoji',
+        value: {
+            hexCode: "1F3C6",
+            id: "trophy"
+        }
+    }
 
     const getImageForBadgeIcon = () => {
 
@@ -127,8 +187,7 @@ function PostRecognition () {
         // else {
             // this.setState({ selectedUsers });
         //}
-        //setSelectedUsers(selectedUsersProps);
-        // console.log(selectedUsersProps)
+        setSelectedUsers(selectedUsersProps);
     };
 
     const onUserInputFocus = () => {
@@ -141,10 +200,64 @@ function PostRecognition () {
         // }
     }
 
+    const minMessageChar = {
+        isSet: false,
+        value: 25
+    }
     // const onUserInputBlur = () => {
 
     // }
 
+    const onImpactOpen = () => {
+        props.switchBalanceTab(1);
+    }
+
+    const onImpactClose = () => {
+        props.switchBalanceTab(0);
+    }
+
+    const handleImpactValueChange = (impact, carrots) => {
+        setImpact(impact);
+        setCarrots(carrots);
+        setCarrotsTouched(true);
+    }
+
+    const handleMessage = (editorStateProps) => {
+        setEditorState(editorStateProps);
+        setMessageError(null);
+    }
+
+    const handleMessageInputFocus = () => {
+        setIsMessageTipsVisible(true);
+      };
+    
+    const onAddMention = (props) => {
+        // const { selectedMentions } = this.state;
+        // selectedMentions.add(props.id);
+        // this.setState({ selectedMentions });
+        selectedMentions.add(props.id);
+        setSelectedMentions(selectedMentions);
+    };
+
+    const messageInputHasText = editorState.getCurrentContent().hasText();
+    const mentionUsers = [
+        {
+            "id": "5f60a577937a424a11ee2b36",
+            "_id": "5f60a577937a424a11ee2b36",
+            "name" : "Minh Y Nguyen",
+            "username": "minh-y-nguyen",
+            "profile": {
+                "firstName": "Minh Y",
+                "lastName": "Nguyen",
+                "username": "minh-y-nguyen",
+                "allowanceType": "regular",
+                "status": "normal"
+            },
+            "role": [
+                "Employee"
+            ]
+        }
+    ]
     return (
         <div className={classes.post_container}>
             <div style={{overflow: 'hidden', width: 'calc(100% - 1px)'}}>
@@ -171,61 +284,63 @@ function PostRecognition () {
                             // onBlue={onUserInputBlur}
                         />
                     </div>
-                    {/* <div className={classNames(
-                            'row',
-                            'shoutout-user-select',
-                            classes.input_row_style,
-                        )}
-                    >
-                            <div style={{width: '100%', display: 'flex', zIndex: '3', position: 'relative'}}>
-                                <div style={{width: '50px', height: '31px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                                    <div style={{color: '#9e9e9e', filter: 'grayscale(1)', cursor: 'pointer', fontSize: '16px'}}>
-                                        <span role='img' aria-label='icon'>🏆</span>
-                                    </div>
-                                </div>
-                            <div style={{width: '100%'}}>
-                                <FormControl fullWidth>
-                                    <Select
-                                        // value={trophies}
-                                        // onChange={handleChangeTrophies}
-                                        value=""
-                                        displayEmpty
-                                        className={classes.selectEmpty}
-                                        inputProps={{ 'aria-label': 'Without label' }}
-                                        MenuProps={MenuProps}
-                                    >
-                                        {/* <MenuItem value="" disabled>
-                                            <div style={{color: '#9e9e9e'}}>Add Trophies</div>
-                                        </MenuItem>
-                                        <MenuItem value="10"><span role='img' aria-label='icon'>🙂</span> Add 10 Trophies</MenuItem>
-                                        <MenuItem value="20"><span role='img' aria-label='icon'>😀</span> Add 20 Trophies</MenuItem>
-                                        <MenuItem value="30"><span role='img' aria-label='icon'>👏</span> Add 30 Trophies</MenuItem>
-                                        <MenuItem value="40"><span role='img' aria-label='icon'>💪</span> Add 40 Trophies</MenuItem>
-                                        <MenuItem value="50"><span role='img' aria-label='icon'>🚀</span> Add 50 Trophies</MenuItem>
-                                    </Select>
-                                </FormControl>
+                    {
+                        canGivePoints && (
+                            <div className={classNames(
+                                'row',
+                                'shoutout-user-select',
+                                classes.input_row_style,
+                            )}>
+                                <ImpactValueSelector
+                                    carrots={carrots}
+                                    impact={impact}
+                                    onChange={handleImpactValueChange}
+                                    options={impactLevels}//hard
+                                    selectedUsers={selectedUsers}//hard
+                                    mePointsToGive={mePointsToGive}//hard
+                                    carrotsPerPost={carrotsPerPost}//setting
+                                    error={carrotError}
+                                    canGiveCustomAmount={canGiveCustomAmount && canGivePoints}//hard
+                                    canGivePoints={canGivePoints}
+                                    onImpactOpen={onImpactOpen}
+                                    onImpactClose={onImpactClose}
+                                    customCurrency={customCurrency}//hard
+                                    customCompanyIcon={customCompanyIcon}//hard
+                                />
                             </div>
-                        </div>
-                    </div> */}
-                    {/* <div className={classNames(
+                        )
+                    }
+                    {/* {coreValuesSetStatus && coreValues.length !== 0 && (
+                        <div
+                            className={classNames(
                             'row',
-                            'shoutout-user-select',
-                            classes.input_row_style,
-                        )}
-                    >
-                            <div style={{width: '100%', display: 'flex', zIndex: '3', position: 'relative'}}>
-                                <div style={{width: '50px', height: '31px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                                    <div style={{color: '#9e9e9e', filter: 'grayscale(1)', cursor: 'pointer', fontSize: '16px'}}>
-                                        <span role="img" aria-label="icon">✍️</span>
-                                    </div>
-                                </div>
-                            <div style={{width: '100%'}}>
-                                <FormControl fullWidth>
-                                    <TextField multiline placeholder="What did your cowokers(s) do?"/>
-                                </FormControl>
-                            </div>
+                            'shoutout-corevalue-select',
+                            classes.inputRowStyle,
+                            )}
+                        >
+                            <CoreValueSelector
+                            value={this.state.coreValue}
+                            onChange={this.handleCoreValue}
+                            options={coreValues}
+                            />
                         </div>
-                    </div> */}
+                    )} */}
+                    <div className={classNames(
+                                'row',
+                                'shoutout-user-select',
+                                classes.input_row_style,
+                    )}>
+                        {/* <MessageInput
+                            handleMessage={handleMessage}
+                            editorState={editorState}
+                            error={messageError}
+                            minMessageChar={minMessageChar}//hard
+                            hasText={messageInputHasText}//hard
+                            mentionUsers={mentionUsers}//hard
+                            onAddMention={onAddMention}
+                            onFocus={handleMessageInputFocus}
+                        /> */}
+                    </div>
                 </div>
                 <div className="justify-content-end align-items-center" style={{display: 'flex', padding: 14}}>
                     <div style={{display: 'flex', justifyContent: 'flex-end'}}>
