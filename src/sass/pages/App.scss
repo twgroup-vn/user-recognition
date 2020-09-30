@@ -7,3 +7,42 @@
     padding-top: 40px;
     transition: all .3s ease;
 }
+/* PLACEHOLDER STYLE STARTS*/
+
+
+
+.DraftEditor-editorContainer,
+.DraftEditor-root,
+.public-DraftEditor-content {
+  height: inherit;
+  text-align: initial;
+}
+
+.DraftEditor-root {
+    position: relative;
+}
+
+.public-DraftEditorPlaceholder-root {
+    color: #e2e2e2;
+    position: absolute;
+    z-index: 1;
+}
+
+.DraftEditor-editorContainer {
+    color: rgba(0,0,0,.87);
+    background-color: hsla(0,0%,100%,0);
+    border-left: .1px solid transparent;
+    position: relative;
+    z-index: 1;
+}
+
+.public-DraftStyleDefault-block {
+    position: relative;
+    white-space: pre-wrap;
+}
+
+.public-DraftStyleDefault-ltr {
+    direction: ltr;
+    text-align: left;
+}
+

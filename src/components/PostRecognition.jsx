@@ -12,8 +12,9 @@ import GifIcon from '@material-ui/icons/Gif';
 import { getImageForBadge } from '../assets/Util/BadgesInfo';
 import DSTypeAhead from './give-carrot/DSTypeAhead';
 import ImpactValueSelector from './give-carrot/ImpactValueSelector';
-// import MessageInput from './give-carrot/MessageInput';
-import { EditorState, Modifier } from 'draft-js'; 
+import MessageInput from './give-carrot/MessageInput';
+import { EditorState, Modifier } from 'draft-js';
+import { reduxForm } from 'redux-form'; 
 
 const StyledTabs = withStyles({
     root: {
@@ -123,7 +124,7 @@ function PostRecognition (props) {
     const [messageError, setMessageError] = useState(null);
     const [isMessageTipsVisible, setIsMessageTipsVisible] = useState(false);
     const [selectedMentions, setSelectedMentions] = useState(new Set());
-
+    const [isFormSubmitting, setIsFormSubmitting] = useState(false);
 
 
     const handleTabChange = (event, newValue) => {
@@ -258,6 +259,42 @@ function PostRecognition (props) {
             ]
         }
     ]
+
+    const shouldDisableGiveButton = () => {
+        let giveButtonDisabled = true;
+        // const {
+        //     isFormSubmitting,
+        //     selectedUsers,
+        //     editorState,
+        //     carrotError,
+        //     carrotsTouched,
+        //     carrots,
+        // } = this.state;
+        const { canGivePoints, mePointsToGive } = props;
+        const hasText = editorState.getCurrentContent().hasText();
+
+        if (isFormSubmitting) {
+            giveButtonDisabled = true;
+        }
+
+        else if(selectedUsers.length > 0 && hasText) {
+            if(!carrotError) {
+                if (!canGivePoints || Number(mePointsToGive) === 0) {
+                    giveButtonDisabled = false;
+                }
+                else if (canGivePoints && carrotsTouched) {
+                    if (selectedUsers.length * carrots <= mePointsToGive) {
+                      giveButtonDisabled = false;
+                    }
+                }
+            }
+        }
+
+        return giveButtonDisabled;
+    }
+
+    const giveButtonDisabled = shouldDisableGiveButton();
+
     return (
         <div className={classes.post_container}>
             <div style={{overflow: 'hidden', width: 'calc(100% - 1px)'}}>
@@ -330,7 +367,7 @@ function PostRecognition (props) {
                                 'shoutout-user-select',
                                 classes.input_row_style,
                     )}>
-                        {/* <MessageInput
+                        <MessageInput
                             handleMessage={handleMessage}
                             editorState={editorState}
                             error={messageError}
@@ -339,7 +376,7 @@ function PostRecognition (props) {
                             mentionUsers={mentionUsers}//hard
                             onAddMention={onAddMention}
                             onFocus={handleMessageInputFocus}
-                        /> */}
+                        />
                     </div>
                 </div>
                 <div className="justify-content-end align-items-center" style={{display: 'flex', padding: 14}}>
@@ -410,8 +447,7 @@ function PostRecognition (props) {
                         color="primary"
                         className={classes.button}
                         type="submit"
-                        // disabled={giveButtonDisabled}
-                        disabled
+                        disabled={giveButtonDisabled}
                     >
                         {
                         /* {givePrivately
@@ -426,5 +462,9 @@ function PostRecognition (props) {
         </div>
     )
 }
+
+// PostRecognition = reduxForm({
+//     form: 'giveCarrotsForm', // a unique name for this form
+// })(PostRecognition);
 
 export default PostRecognition

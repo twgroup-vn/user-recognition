@@ -68,15 +68,25 @@ function MessageInput(props) {
     const classes = useStyles();
 
     const onFocus = () => {
-
+        // this.setState({ inputIconOn: true });
+        setInputIconOn(true);
+        editor.focus();
+        props.onFocus();
     }
 
-    const onChange = () => {
-
+    const onChange = (editorState) => {
+        props.handleMessage(editorState)
     }
 
     const onInputBlur = () => {
 
+        if(props.hasText) {
+            setInputIconOn(true);
+        }
+        
+        else {
+            setInputIconOn(false);
+        }
     }
 
     const onSearchChange = () => {
