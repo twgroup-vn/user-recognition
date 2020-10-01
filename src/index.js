@@ -7,11 +7,6 @@ import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import { CssBaseline } from '@material-ui/core';
 
-// const muiTheme = getMuiTheme({
-//   
-// });
-
-
 const LIGHT = 300;
 const REGULAR = 400;
 const SEMIBOLD = 500;
@@ -128,7 +123,4 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();

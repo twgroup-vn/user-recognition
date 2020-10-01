@@ -120,8 +120,8 @@ const useStyles = makeStyles((theme) => ({
 const employees = [
     {
         "profile": {
-            "firstName": "Nguyet",
-            "lastName": "Vo",
+            "first_name": "Nguyet",
+            "last_name": "Vo",
             "username": "nguyetvo",
             "allowanceType": "regular",
             "status": "normal"
@@ -133,8 +133,8 @@ const employees = [
     },
     {
         "profile": {
-            "firstName": "Minh Y",
-            "lastName": "Nguyen",
+            "first_name": "Minh Y",
+            "last_name": "Nguyen",
             "username": "minh-y-nguyen",
             "allowanceType": "regular",
             "status": "normal"
@@ -146,8 +146,8 @@ const employees = [
     },
     {
         "profile": {
-            "firstName": "Phat",
-            "lastName": "Lam",
+            "first_name": "Phat",
+            "last_name": "Lam",
             "username": "phatlam",
             "allowanceType": "regular",
             "status": "normal"
@@ -159,8 +159,8 @@ const employees = [
     },
     {
         "profile": {
-            "firstName": "Lại Văn Anh",
-            "lastName": "Thức",
+            "first_name": "Lại Văn Anh",
+            "last_name": "Thức",
             "username": "lại văn anhthức",
             "allowanceType": "regular",
             "status": "normal"
@@ -172,8 +172,8 @@ const employees = [
     },
     {
         "profile": {
-            "firstName": "Nguyen",
-            "lastName": "Hieu Thuan",
+            "first_name": "Nguyen",
+            "last_name": "Hieu Thuan",
             "username": "thuan",
             "allowanceType": "regular",
             "status": "normal"
@@ -186,8 +186,8 @@ const employees = [
     },
     {
         "profile": {
-            "firstName": "Quoc",
-            "lastName": "Huy",
+            "first_name": "Quoc",
+            "last_name": "Huy",
             "username": "huy",
             "allowanceType": "regular",
             "status": "normal"
@@ -213,8 +213,8 @@ const employees = [
                     "s3bucket": "carrothrimage"
                 }
             },
-            "firstName": "Vo Xuan",
-            "lastName": "Bach",
+            "first_name": "Vo Xuan",
+            "last_name": "Bach",
             "username": "xuanbach",
             "allowanceType": "regular",
             "status": "normal"

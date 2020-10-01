@@ -69,8 +69,8 @@ function Balance (props) {
     const customCompanyIcon = {
         type: 'emoji',
         value: {
-            hexCode: "1F3C6",
-            id: "trophy"
+            hexCode: "02764",
+            id: "heart"
         }
     }
 
@@ -97,7 +97,7 @@ function Balance (props) {
                         <div className={classes.balance_carrots}>
                             100
                             <CarrotIcon
-                                style={{fontSize: 20, marginLeft: 5, marginTop: 2}}
+                                style={{fontSize: 24, fontFamily: 'Segoe UI Emoji'}}
                                 active
                                 url={customCompanyIcon}/>
                         </div>

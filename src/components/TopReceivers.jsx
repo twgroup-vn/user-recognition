@@ -94,8 +94,8 @@ const topReceivers = [//call API to get list
             totalPointsEarned: 90,
             totalPointsGiven: 50,
             profile: {
-                firstName: 'Võ',
-                lastName: 'Minh Nguyệt'
+                first_name: 'Võ',
+                last_name: 'Minh Nguyệt'
             }
         }
     },
@@ -109,8 +109,8 @@ const topReceivers = [//call API to get list
             totalPointsEarned: 60,
             totalPointsGiven: 20,
             profile: {
-                firstName: 'Võ',
-                lastName: 'Xuân Bách'
+                first_name: 'Võ',
+                last_name: 'Xuân Bách'
             }
         }
     },
@@ -124,8 +124,8 @@ const topReceivers = [//call API to get list
             totalPointsEarned: 60,
             totalPointsGiven: 20,
             profile: {
-                firstName: 'Nguyễn',
-                lastName: 'Minh Ý'
+                first_name: 'Nguyễn',
+                last_name: 'Minh Ý'
             }
         }
     },
@@ -139,8 +139,8 @@ const topReceivers = [//call API to get list
             totalPointsEarned: 20,
             totalPointsGiven: 40,
             profile: {
-                firstName: 'Trương',
-                lastName: 'Quốc Huy'
+                first_name: 'Trương',
+                last_name: 'Quốc Huy'
             }
         }
     }

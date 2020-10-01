@@ -114,7 +114,7 @@ function FeedCard(props) {
                         )
                     }
                     <span className={classes.feed_carrot_time} style={{ display: 'flex', alignItems: 'center' }}>
-                        {getAgoTime(card.createdAt)}
+                        {getAgoTime(card.created_at)}
                     </span>
                 </div>
                 {card.carrotsEach > 0 && (

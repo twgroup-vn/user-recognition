@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import Fuse from 'fuse.js';
+// import Fuse from 'fuse.js';
 import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 // import {
@@ -119,7 +119,7 @@ function MessageInput(props) {
                     onClick={onFocus}
                 >
                     <span role="img" aria-label="icon">
-                        ✍️
+                        💌
                     </span>
                 </div>
             </div>

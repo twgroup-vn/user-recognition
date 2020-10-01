@@ -98,7 +98,7 @@ const ClickableUserName = ({ user }) => {
 }
 function FeedCardTitle(props) {
     const classes = useStyle();
-    const to = props.to.users;
+    // const to = props.to.users;
 
     const hasBadge = () => {
         const badge = props.badges && props.badges.length > 0
@@ -126,7 +126,7 @@ function FeedCardTitle(props) {
                 // onUserClicked={onUserClicked()}
             />
             {hasBadge()}
-            {to.length> 2 ? (
+            {props.to.length> 2 ? (
                 <span className={classes.feed_card_to}>
                     <ReactHoverObserver>
                         {/* <UserNameComponent
@@ -135,10 +135,10 @@ function FeedCardTitle(props) {
                         /> */}
                     </ReactHoverObserver>
                 </span>
-            ) : Number(to.length) === 1 ? (
+            ) : Number(props.to.length) === 1 ? (
                 <span className={classes.feed_card_to} style={{display: 'flex'}}>
                     <ClickableUserName
-                        user={to[0]}
+                        user={props.to[0]}
                         // isTo
                         // onUserClicked={this.onUserClicked}
                     />
@@ -146,13 +146,13 @@ function FeedCardTitle(props) {
             ) : (
                 <span className={classes.feed_card_to} style={{display: 'flex'}}>
                     <ClickableUserName
-                        user={to[0]}
+                        user={props.to[0]}
                         // isTo
                         // onUserClicked={this.onUserClicked}
                     />
                     <span className="feed-card-gave">&nbsp;and&nbsp;</span>
                     <ClickableUserName
-                        user={to[1]}
+                        user={props.to[1]}
                         // isTo
                         // onUserClicked={this.onUserClicked}
                     />

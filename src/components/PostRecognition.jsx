@@ -14,7 +14,7 @@ import DSTypeAhead from './give-carrot/DSTypeAhead';
 import ImpactValueSelector from './give-carrot/ImpactValueSelector';
 import MessageInput from './give-carrot/MessageInput';
 import { EditorState, Modifier } from 'draft-js';
-import { reduxForm } from 'redux-form'; 
+import { getTextFromEditor, getMentionsToReplace, getLiteralTextFromEditor } from '../assets/Util/mention';
 
 const StyledTabs = withStyles({
     root: {
@@ -123,7 +123,7 @@ function PostRecognition (props) {
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [messageError, setMessageError] = useState(null);
     const [isMessageTipsVisible, setIsMessageTipsVisible] = useState(false);
-    const [selectedMentions, setSelectedMentions] = useState(new Set());
+    const [selectedMentions, setSelectedMentions] = useState([]);
     const [isFormSubmitting, setIsFormSubmitting] = useState(false);
 
 
@@ -152,8 +152,8 @@ function PostRecognition (props) {
     const customCompanyIcon = {
         type: 'emoji',
         value: {
-            hexCode: "1F3C6",
-            id: "trophy"
+            hexCode: "02764",
+            id: "heart"
         }
     }
 
@@ -236,7 +236,7 @@ function PostRecognition (props) {
         // const { selectedMentions } = this.state;
         // selectedMentions.add(props.id);
         // this.setState({ selectedMentions });
-        selectedMentions.add(props.id);
+        selectedMentions.push(props.id);
         setSelectedMentions(selectedMentions);
     };
 
@@ -295,6 +295,39 @@ function PostRecognition (props) {
 
     const giveButtonDisabled = shouldDisableGiveButton();
 
+    const handleSubmit = (e, values={}) => {
+        e.preventDefault();
+
+        const mentionsToReplace = getMentionsToReplace(selectedMentions, mentionUsers)
+
+        const message = getTextFromEditor(editorState, mentionsToReplace)
+        const literalMessage = getLiteralTextFromEditor(editorState);
+
+        //mapping data
+        const giveCarrots = {
+            to: selectedUsers.map((user) => user._id),
+            carrotsEach: Number(carrots),
+            message,
+        }
+
+        if (selectedBadge) {
+            giveCarrots.badges = [selectedBadge.name];
+        }
+        
+        // if(impact) {
+        //     giveCarrots.postImpact = props.impactData.find((item) => item.name === impact)
+        // }
+
+        // this.setState({
+        //     isFormSubmitting: true,
+        //     isRecognitionOpen: false,
+        //     isMessageTipsVisible: false,
+        // });
+
+        //call API
+
+    }
+
     return (
         <div className={classes.post_container}>
             <div style={{overflow: 'hidden', width: 'calc(100% - 1px)'}}>
@@ -306,7 +339,7 @@ function PostRecognition (props) {
                     <StyledTab disableRipple label='Give Recognition' />
                 </StyledTabs>
             </div>
-            <form className={classes.form_container}>
+            <form onSubmit={handleSubmit} className={classes.form_container}>
                 <div className={classes.p_16}>
                     <div 
                         className={classNames(

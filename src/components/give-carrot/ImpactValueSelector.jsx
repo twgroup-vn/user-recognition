@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import CustomImpactModal from './CustomImpactModal';
@@ -85,7 +85,17 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,selectedUsers,mePointsToGive,carrotsPerPost,error,canGiveCustomAmount,canGivePoints,onImpactOpen,onImpactClose,customCurrency,customCompanyIcon
-    
+    const [inputIconOn, setInputIconOn] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [subSelectOpen, setSubSelectOpen] = useState(false);
+    const [customImpactModalOpen, setCustomImpactModalOpen] = useState(false);
+    const classes = useStyles();
+
+    //cpndidupdate
+    // useEffect(() => {
+        
+    // })
+
     const placeholder = 'Add Trophies';
     let maxPointsToGive = props.mePointsToGive;
 
@@ -94,6 +104,7 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
     }
 
     const disableSelect = Number(props.mePointsToGive) === 0;
+
     const filterOption = props.options.filter((option, index) => {
         if(index > 0) {
             const preOption = props.options[index - 1];
@@ -115,11 +126,6 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
     //     customCurrency,
     //     customCompanyIcon,
     //   } = this.props;
-    const [inputIconOn, setInputIconOn] = useState(false);
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [subSelectOpen, setSubSelectOpen] = useState(false);
-    const [customImpactModalOpen, setCustomImpactModalOpen] = useState(false);
-    const classes = useStyles();
 
     const handleOpen = () => {
         props.onImpactOpen();
@@ -134,6 +140,7 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
                 itemClicked = true;
             }
         }
+
         if (!itemClicked && !subSelectOpen) {
             closeSelect();
         }
@@ -154,7 +161,8 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
         if( props.impact || props.carrots ) {
             setInputIconOn(true);
         } else {
-            setInputIconOn(false);
+            //setInputIconOn(false);
+            setInputIconOn(true);//needwriteincpndidupdate
         }
     };
 
@@ -187,6 +195,7 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
                         onClick={handleOpen}
                         url={props.customCompanyIcon}
                         currency={props.customCurrency.NAME}
+                        style={{fontFamily: 'Segoe UI Emoji'}}
                     />
                 </div>
                 <FormControl className={classes.formControl}>
@@ -201,11 +210,11 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
                         <Select
                             value={props.carrots}
                             open={menuOpen}
-                            name="impactValue"
+                            name='impactValue'
                             displayEmpty
                             fullWidth
                             onOpen={handleOpen}
-                            onClose={handleClose}
+                            onClose={(e) => handleClose(e)}
                             className={classNames(classes.impactSelector, {
                                 [`${classes.impactSelectorDisabled}`] : disableSelect,
                             })}
@@ -215,8 +224,8 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
                                     classes={{
                                         underline: classes.underline
                                     }}
-                                    name="impactValue"
-                                    id="impactValue"
+                                    name='impactValue'
+                                    id='impactValue'
                                 />
                             }
                             renderValue={() => {
