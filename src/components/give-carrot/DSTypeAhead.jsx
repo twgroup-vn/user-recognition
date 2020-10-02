@@ -120,85 +120,6 @@ const useStyles = makeStyles((theme) => ({
 const employees = [
     {
         "profile": {
-            "first_name": "Nguyet",
-            "last_name": "Vo",
-            "username": "nguyetvo",
-            "allowanceType": "regular",
-            "status": "normal"
-        },
-        "role": [
-            "Owner"
-        ],
-        "_id": "5f60a334e3f6bce90f93543a"
-    },
-    {
-        "profile": {
-            "first_name": "Minh Y",
-            "last_name": "Nguyen",
-            "username": "minh-y-nguyen",
-            "allowanceType": "regular",
-            "status": "normal"
-        },
-        "role": [
-            "Employee"
-        ],
-        "_id": "5f60a577937a424a11ee2b36"
-    },
-    {
-        "profile": {
-            "first_name": "Phat",
-            "last_name": "Lam",
-            "username": "phatlam",
-            "allowanceType": "regular",
-            "status": "normal"
-        },
-        "role": [
-            "Employee"
-        ],
-        "_id": "5f60bc0f937a427d33ee2bda"
-    },
-    {
-        "profile": {
-            "first_name": "Lại Văn Anh",
-            "last_name": "Thức",
-            "username": "lại văn anhthức",
-            "allowanceType": "regular",
-            "status": "normal"
-        },
-        "role": [
-            "Employee"
-        ],
-        "_id": "5f616ea5e53380557cea92a8"
-    },
-    {
-        "profile": {
-            "first_name": "Nguyen",
-            "last_name": "Hieu Thuan",
-            "username": "thuan",
-            "allowanceType": "regular",
-            "status": "normal"
-        },
-        "role": [
-            "Employee",
-            "Admin"
-        ],
-        "_id": "5f630669ee72f4a9fa4a8107"
-    },
-    {
-        "profile": {
-            "first_name": "Quoc",
-            "last_name": "Huy",
-            "username": "huy",
-            "allowanceType": "regular",
-            "status": "normal"
-        },
-        "role": [
-            "Employee"
-        ],
-        "_id": "5f641ed95f84d36eabc8b61e"
-    },
-    {
-        "profile": {
             "image": {
                 "original": {
                     "relativeUrl": "https://s3-us-west-1.amazonaws.com/carrothrimage/5e83dcd6-0e23-4cea-aadd-c8f308ae033f1600756829709.jpg",
@@ -222,7 +143,7 @@ const employees = [
         "role": [
             "Employee"
         ],
-        "_id": "5f68543ce93e6cee1c997c6a"
+        "_id": "d70a2d14-df3f-4a50-9711-70a37b9982d4"
     }
 ]
 function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
@@ -521,7 +442,7 @@ function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
                                         }),
                                         onChange: handleInputChange,
                                         onKeyDown: handleKeyDown,
-                                        placeholder: 'Search for a coworker(s)',
+                                        placeholder: 'Người được nhận',
                                         id: 'integration-downshift-multiple',
                                         onFocus: (event) => {
                                             openMenu();

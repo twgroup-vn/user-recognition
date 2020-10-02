@@ -85,10 +85,10 @@ function Balance (props) {
                 onChange={handleChange}
             >
                 {
-                    showEarnedBalance && <StyledTab value={0} label="Earned Balance" />
+                    showEarnedBalance && <StyledTab value={0} label="Số ❤️ nhận được" />
                 }
                 {
-                    showAllowance && <StyledTab value={1} label="Giving Allowance" />
+                    showAllowance && <StyledTab value={1} label="Số ❤️ cho đi" />
                 }
             </StyledTabs>
             {
@@ -115,7 +115,7 @@ function Balance (props) {
                                 200
                             </div>
                             <CarrotIcon
-                                style={{ fontSize: 20, marginLeft: 5, marginTop: 2 }}
+                                style={{ fontSize: 24, fontFamily: 'Segoe UI Emoji' }}
                                 active
                                 url={customCompanyIcon}
                             />

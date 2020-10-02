@@ -136,7 +136,7 @@ function MessageInput(props) {
                         }}
                         onBlur={onInputBlur}
                         onFocus={onFocus}
-                        placeholder="What did your coworker(s) do?"
+                        placeholder="Hãy viết những lời ý nghĩa gửi đến người đó"
                         onSearchChange={onSearchChange}
                         onAddMention={onAddMention}
                         suggestions={suggestions}

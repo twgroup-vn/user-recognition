@@ -1,0 +1,5 @@
+const GIVE_RECOGNITION_HEADER = 'Lời cám ơn';
+
+export {
+    GIVE_RECOGNITION_HEADER
+}

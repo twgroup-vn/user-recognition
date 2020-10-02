@@ -15,6 +15,8 @@ import ImpactValueSelector from './give-carrot/ImpactValueSelector';
 import MessageInput from './give-carrot/MessageInput';
 import { EditorState, Modifier } from 'draft-js';
 import { getTextFromEditor, getMentionsToReplace, getLiteralTextFromEditor } from '../assets/Util/mention';
+import { GIVE_RECOGNITION_HEADER } from '../assets/Util/constants';
+import axios from 'axios';
 
 const StyledTabs = withStyles({
     root: {
@@ -306,7 +308,7 @@ function PostRecognition (props) {
         //mapping data
         const giveCarrots = {
             to: selectedUsers.map((user) => user._id),
-            carrotsEach: Number(carrots),
+            carrots_each: Number(carrots),
             message,
         }
 
@@ -324,7 +326,17 @@ function PostRecognition (props) {
         //     isMessageTipsVisible: false,
         // });
 
+        console.log(giveCarrots)
         //call API
+        axios.post('https://camon.twgroup.vn/api/v1/feed', giveCarrots , {
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'eyJhbGciOiJSUzI1NiJ9.eyJpZCI6IjE0NWRjNGI3LWQyODEtNDIzNi1hZjYwLWM2MmI3NDk3YmVjYSIsImVtYWlsIjoicGhhdGx0QHR3Z3JvdXAudm4ifQ.Ft8bNFXhOSbFneB_A4_zqzM3QMpzOEpHUo-OuAOJAC-nDqb3M1S0mGtqcMhadbdP8LP0fws9ecK3FNgvazKf1btp6Ojg5hCxORy2Wc8LAohb_cl4T3_DKy44XvYkVKM8zX61WLud2yUcTrpe46cbX80n6ItahSNvvQNtR0j_x-BzeaSr0MX13hrftKqGdFZGG6NKOS9THEHzNLXhkcG3m4vxXv3rNPyeDMQIimw3EF2FNjBNhZJff2Dj0_QtullEm26hf4NrS5ZjZBPJJo6SgSH7-M4hrOtPTAhLB0_QsBJm6W4Oq9OYd-cxe470WpeSz1TIPuVLJV9TEKW95lcDK-SXBH781xwxvr3WLpbK7qe-RdGnEOl1ymnoJAH7TpIWCAsiVUOmob3xjUDrvuylLACQ43k5sfh4au9vch9-AIR74US0uIdJZGfnPeUGc4QMz8rrlztnRhdvLBwErWkqg-lebjICvWg-5GQm6FPmpalNxTBB1QX20B-3Hg1hr8LqiptVWhn6156DSRwxjLCgyaQrsq707fseYZbKDRi35VVus9dMhCTVlQ11SH2TLOpd8n1EeHsL3ESObtdXzNFrVKgKAVnQawWnYM1ZEim4yzaVBbHgKqB2QKCupdj-U6pMH0oVA8t1se0RuRMageF4_TRlAnOC1Oq2z0Lhmv_VAlI'
+            }
+        }).then((res) => {
+            console.log(res.data.data)
+        })
 
     }
 
@@ -336,7 +348,7 @@ function PostRecognition (props) {
                     variant='fullWidth'
                     value={slideIndex}
                     onChange={handleTabChange}>
-                    <StyledTab disableRipple label='Give Recognition' />
+                    <StyledTab disableRipple label= {GIVE_RECOGNITION_HEADER} />
                 </StyledTabs>
             </div>
             <form onSubmit={handleSubmit} className={classes.form_container}>
@@ -429,8 +441,8 @@ function PostRecognition (props) {
                         )} */}
                         {
                             badgeAttachability && (
-                                <Tooltip title='Add Badge' placement='top'>
-                                    <IconButton className={classes.iconButton} aria-label='Add Badge'>
+                                <Tooltip title='Danh hiệu' placement='top'>
+                                    <IconButton className={classes.iconButton} aria-label='Danh hiệu'>
                                         {
                                             selectedBadge ? (
                                                 <img
@@ -445,30 +457,30 @@ function PostRecognition (props) {
                                 </Tooltip>
                             )
                         }
-                        <Tooltip title="Add Emoji" placement="top">
+                        <Tooltip title="Biểu tượng cảm xúc" placement="top">
                             <IconButton
                                 className={classes.iconButton}
                                 // onClick={onEmojiClick}
-                                aria-label="Add Emoji"
+                                aria-label="Biểu tượng cảm xúc"
                             >
                                 <EmojiIcon />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip title="Add Image" placement="top">
+                        <Tooltip title="Hình ảnh" placement="top">
                             <IconButton
                                 color="primary"
                                 className={classes.iconButton}
                                 component="span"
-                                aria-label="Add Image"
+                                aria-label="Hình ảnh"
                             >
                                 <CameraIcon />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip title="Add Gif" placement="top">
+                        <Tooltip title="Gif" placement="top">
                             <IconButton
                                 // onClick={onGifClick}
                                 className={classes.iconButton}
-                                aria-label="Add Gif"
+                                aria-label="Gif"
                             >
                                 <GifIcon />
                             </IconButton>
@@ -487,7 +499,7 @@ function PostRecognition (props) {
                         ? 'Give Privately'
                         : titleize(GIVE_RECOGNITION)} */
                         
-                        titleize('give recognition')}
+                        titleize('gửi lời cảm ơn')}
                     </Button>
                     </div>
                 </div>

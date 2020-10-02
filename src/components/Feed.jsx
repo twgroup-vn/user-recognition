@@ -3,9 +3,6 @@ import React, { useEffect, useState } from 'react';
 import FeedCard from './FeedCard';
 import axios from 'axios';
 
-
-
-
 function Feed() {
     const [homeFeed, setHomeFeed] = useState([]);
     useEffect(() => {

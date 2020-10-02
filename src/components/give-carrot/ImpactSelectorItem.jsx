@@ -101,7 +101,7 @@ function ImpactSelectorItem(props) {//props: impact,onValueChange,defaultValue,a
 
     const value = carrotAmount || 0;
     // let customCurrencyDisp = props.customCurrency.NAME_TITLEIZED_PLURAL;
-    let customCurrencyDisp = 'Trophies';
+    let customCurrencyDisp = 'Tim';
 
     if (value === 1) {
         // customCurrencyDisp = props.customCurrency.NAME_TITLEIZED;
@@ -157,7 +157,7 @@ function ImpactSelectorItem(props) {//props: impact,onValueChange,defaultValue,a
                         {...rest}
                     >
                         <div className={classes.menuDiv} id='select-item' onClick={onOptionSelect}>
-                            {props.option} Add {carrotAmount} {customCurrencyDisp} {multipleUserText}
+                            {props.option} Tặng {carrotAmount} {customCurrencyDisp} {multipleUserText}
                         </div>
                         {
                             props.canGivePoint && (

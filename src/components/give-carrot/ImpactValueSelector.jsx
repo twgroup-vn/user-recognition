@@ -95,8 +95,7 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
     // useEffect(() => {
         
     // })
-
-    const placeholder = 'Add Trophies';
+    const placeholder = 'Tặng tim';
     let maxPointsToGive = props.mePointsToGive;
 
     if( props.selectedUsers.length > 0 ) {
@@ -105,7 +104,7 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
 
     const disableSelect = Number(props.mePointsToGive) === 0;
 
-    const filterOption = props.options.filter((option, index) => {
+    const filterOptions = props.options.filter((option, index) => {
         if(index > 0) {
             const preOption = props.options[index - 1];
             if (props.maxPointsToGive < preOption.goldLimit) {
@@ -246,7 +245,7 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
                                     )
                                 }
                                 const value = props.carrots || 0;
-                                let customCurrencyDisp = 'Trophies';
+                                let customCurrencyDisp = 'Tim';
 
                                 if( value === 1 ) {
                                     customCurrencyDisp = 'Trophoy';
@@ -297,7 +296,7 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
                             }}
                         >
                             {
-                                filterOption.map(option => (
+                                filterOptions.map(option => (
                                     <ImpactSelectorItem
                                         option={option.label}
                                         impact={option.value}

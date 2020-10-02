@@ -117,6 +117,13 @@ function FeedCardTitle(props) {
                 </span>
             )
         }
+        else {
+            return (
+                <span className={classes.feed_card_gave} style={{ display: 'contents', marginBottom: 0 }}>
+                    &nbsp;recognized&nbsp;
+                </span>
+            )
+        }
     }
 
     return (
