@@ -1,22 +1,39 @@
 {
   "files": {
     "main.css": "/user-recognition/static/css/main.01c8caa1.chunk.css",
-    "main.js": "/user-recognition/static/js/main.89a6456f.chunk.js",
-    "main.js.map": "/user-recognition/static/js/main.89a6456f.chunk.js.map",
+    "main.js": "/user-recognition/static/js/main.d889c3f5.chunk.js",
+    "main.js.map": "/user-recognition/static/js/main.d889c3f5.chunk.js.map",
     "runtime-main.js": "/user-recognition/static/js/runtime-main.9a3e4f2a.js",
     "runtime-main.js.map": "/user-recognition/static/js/runtime-main.9a3e4f2a.js.map",
-    "static/js/2.6a893cbd.chunk.js": "/user-recognition/static/js/2.6a893cbd.chunk.js",
-    "static/js/2.6a893cbd.chunk.js.map": "/user-recognition/static/js/2.6a893cbd.chunk.js.map",
+    "static/js/2.f69997f4.chunk.js": "/user-recognition/static/js/2.f69997f4.chunk.js",
+    "static/js/2.f69997f4.chunk.js.map": "/user-recognition/static/js/2.f69997f4.chunk.js.map",
     "index.html": "/user-recognition/index.html",
-    "precache-manifest.bbf7a01136508b31b970f36e505c2d9c.js": "/user-recognition/precache-manifest.bbf7a01136508b31b970f36e505c2d9c.js",
+    "precache-manifest.c343a8dc116a79cb375e83b5dc1e9935.js": "/user-recognition/precache-manifest.c343a8dc116a79cb375e83b5dc1e9935.js",
     "service-worker.js": "/user-recognition/service-worker.js",
     "static/css/main.01c8caa1.chunk.css.map": "/user-recognition/static/css/main.01c8caa1.chunk.css.map",
-    "static/js/2.6a893cbd.chunk.js.LICENSE.txt": "/user-recognition/static/js/2.6a893cbd.chunk.js.LICENSE.txt"
+    "static/js/2.f69997f4.chunk.js.LICENSE.txt": "/user-recognition/static/js/2.f69997f4.chunk.js.LICENSE.txt",
+    "static/media/closer_badge.png": "/user-recognition/static/media/closer_badge.543edc90.png",
+    "static/media/creativity_badge.png": "/user-recognition/static/media/creativity_badge.51da00a7.png",
+    "static/media/culture_badge.png": "/user-recognition/static/media/culture_badge.d4ee91eb.png",
+    "static/media/detail_master_badge.png": "/user-recognition/static/media/detail_master_badge.299614d1.png",
+    "static/media/goal_smasher_badge.png": "/user-recognition/static/media/goal_smasher_badge.2ccd5746.png",
+    "static/media/idea_maker_badge.png": "/user-recognition/static/media/idea_maker_badge.73420e58.png",
+    "static/media/initiative_badge.png": "/user-recognition/static/media/initiative_badge.25ea3150.png",
+    "static/media/innovator_badge.png": "/user-recognition/static/media/innovator_badge.f2cad379.png",
+    "static/media/launcher_badge.png": "/user-recognition/static/media/launcher_badge.ca08a56a.png",
+    "static/media/leadership_badge.png": "/user-recognition/static/media/leadership_badge.25ff00e8.png",
+    "static/media/lifesaver_badge.png": "/user-recognition/static/media/lifesaver_badge.98e7f9ad.png",
+    "static/media/motivator_badge.png": "/user-recognition/static/media/motivator_badge.19706b25.png",
+    "static/media/navigator_badge.png": "/user-recognition/static/media/navigator_badge.739e52a5.png",
+    "static/media/obstacle_badge.png": "/user-recognition/static/media/obstacle_badge.18d58301.png",
+    "static/media/problem_solver_badge.png": "/user-recognition/static/media/problem_solver_badge.4b93eeb6.png",
+    "static/media/teamwork_badge.png": "/user-recognition/static/media/teamwork_badge.1f291e2c.png",
+    "static/media/top_earner_badge.png": "/user-recognition/static/media/top_earner_badge.3a628322.png"
   },
   "entrypoints": [
     "static/js/runtime-main.9a3e4f2a.js",
-    "static/js/2.6a893cbd.chunk.js",
+    "static/js/2.f69997f4.chunk.js",
     "static/css/main.01c8caa1.chunk.css",
-    "static/js/main.89a6456f.chunk.js"
+    "static/js/main.d889c3f5.chunk.js"
   ]
 }
