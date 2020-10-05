@@ -334,7 +334,7 @@ function PostRecognition (props) {
 
         //mapping data
         const giveCarrots = {
-            to: selectedUsers.map((user) => user._id),
+            to: selectedUsers.map((user) => user.id),
             carrots_each: Number(carrots),
             message,
         }

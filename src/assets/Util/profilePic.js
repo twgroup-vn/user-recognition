@@ -28,17 +28,20 @@ const UserNameAvatar = (props) => {
     const firstLetter = user.isDeleted ? 'D' : getFirstLetterOfName(user);
     const colorProp = user.isDeleted ? { bg: '#FFF0A2', color: '#FFE145' } : getColor(user);
     let fontSize = 18;
+
     if (size === 30 || size === 32) {
       fontSize = 14;
     } else if (size === 88) {
       fontSize = 36;
     }
+
     const styleProps = {
       backgroundColor: colorProp.bg,
       color: colorProp.color,
       size,
       fontSize,
     };
+
     const classes = useStyles(styleProps);
   
     return <Avatar className={classes.avatarColor}>{firstLetter}</Avatar>;
@@ -47,14 +50,24 @@ const UserNameAvatar = (props) => {
 export const ProfilePic = (props) =>  {
     const { user, size } = props;
     const classes = useStyles({ size });
+    // if (user &&
+    //     user.profile &&
+    //     user.profile.image &&
+    //     user.profile.image.original.relativeUrl) {
+    //         return (
+    //             <Avatar src={user.profile.image.original.relativeUrl} className={classes.avatarImage} />
+    //         )
+    // }
+    
     if (user &&
         user.profile &&
-        user.profile.image &&
-        user.profile.image.original.relativeUrl) {
+        user.profile.avatar) {
             return (
-                <Avatar src={user.profile.image.original.relativeUrl} className={classes.avatarImage} />
+                <Avatar src={user.profile.avatar} className={classes.avatarImage} />
             )
-    } else {
+    }
+
+    else {
         return (
             <UserNameAvatar user={user} size={size} />
         )
@@ -64,8 +77,8 @@ export const ProfilePic = (props) =>  {
 
 export const getColor = (user) => {
     let lastChar = 'p';
-    if (user && user._id) {
-        lastChar = user._id.substr(user._id.length - 1);
+    if (user && user.id) {
+        lastChar = user.id.substr(user.id.length - 1);
     }
     const charCode = lastChar.charCodeAt(0);
     let bg = '#FFBBA2';

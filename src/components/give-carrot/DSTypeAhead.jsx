@@ -10,6 +10,7 @@ import { getProfileFullName } from '../../assets/Util/text';
 import { ProfilePic } from '../../assets/Util/profilePic';
 import keycode from 'keycode';
 import Downshift from 'downshift';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -117,52 +118,38 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const employees = [
-    {
-        "profile": {
-            "image": {
-                "original": {
-                    "relativeUrl": "https://s3-us-west-1.amazonaws.com/carrothrimage/5e83dcd6-0e23-4cea-aadd-c8f308ae033f1600756829709.jpg",
-                    "absoluteUrl": "/carrothrimage/5e83dcd6-0e23-4cea-aadd-c8f308ae033f1600756829709.jpg",
-                    "fileName": "5e83dcd6-0e23-4cea-aadd-c8f308ae033f1600756829709.jpg",
-                    "s3bucket": "carrothrimage"
-                },
-                "resized": {
-                    "relativeUrl": "https://s3-us-west-1.amazonaws.com/carrothrimageresized/5e83dcd6-0e23-4cea-aadd-c8f308ae033f1600756829709.jpg",
-                    "absoluteUrl": "/carrothrimageresized/5e83dcd6-0e23-4cea-aadd-c8f308ae033f1600756829709.jpg",
-                    "fileName": "5e83dcd6-0e23-4cea-aadd-c8f308ae033f1600756829709.jpg",
-                    "s3bucket": "carrothrimage"
-                }
-            },
-            "first_name": "Vo Xuan",
-            "last_name": "Bach",
-            "username": "xuanbach",
-            "allowanceType": "regular",
-            "status": "normal"
-        },
-        "role": [
-            "Employee"
-        ],
-        "_id": "d70a2d14-df3f-4a50-9711-70a37b9982d4"
-    }
-]
 function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
-    // const { classes, employees } = this.props;
     const { handleUsers, onFocus } = props;
     const [ inputValue, setInputValue ] = useState('');
     const [ selectedItem, setSelectedItem ] = useState([]);
     const [ userInputIconOn, setUserInputIconOn ] = useState(false);
+    const [ employees, setEmployees] = useState();
 
     useEffect(() => {
         updateUsersToParent(selectedItem);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedItem])
 
+    useEffect(() => {
+        async function fetchEmployees() {
+            const res = await axios.get('https://camon.twgroup.vn/api/v1/home', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': 'eyJhbGciOiJSUzI1NiJ9.eyJpZCI6IjE0NWRjNGI3LWQyODEtNDIzNi1hZjYwLWM2MmI3NDk3YmVjYSIsImVtYWlsIjoicGhhdGx0QHR3Z3JvdXAudm4ifQ.Ft8bNFXhOSbFneB_A4_zqzM3QMpzOEpHUo-OuAOJAC-nDqb3M1S0mGtqcMhadbdP8LP0fws9ecK3FNgvazKf1btp6Ojg5hCxORy2Wc8LAohb_cl4T3_DKy44XvYkVKM8zX61WLud2yUcTrpe46cbX80n6ItahSNvvQNtR0j_x-BzeaSr0MX13hrftKqGdFZGG6NKOS9THEHzNLXhkcG3m4vxXv3rNPyeDMQIimw3EF2FNjBNhZJff2Dj0_QtullEm26hf4NrS5ZjZBPJJo6SgSH7-M4hrOtPTAhLB0_QsBJm6W4Oq9OYd-cxe470WpeSz1TIPuVLJV9TEKW95lcDK-SXBH781xwxvr3WLpbK7qe-RdGnEOl1ymnoJAH7TpIWCAsiVUOmob3xjUDrvuylLACQ43k5sfh4au9vch9-AIR74US0uIdJZGfnPeUGc4QMz8rrlztnRhdvLBwErWkqg-lebjICvWg-5GQm6FPmpalNxTBB1QX20B-3Hg1hr8LqiptVWhn6156DSRwxjLCgyaQrsq707fseYZbKDRi35VVus9dMhCTVlQ11SH2TLOpd8n1EeHsL3ESObtdXzNFrVKgKAVnQawWnYM1ZEim4yzaVBbHgKqB2QKCupdj-U6pMH0oVA8t1se0RuRMageF4_TRlAnOC1Oq2z0Lhmv_VAlI'
+                }
+            })
+            setEmployees(res.data.data.employees);
+            
+        }
+        fetchEmployees()
+    }, [])
+
     const classes = useStyles();
     
     const updateUsersToParent = (selectedItem) => {
         handleUsers(
-            selectedItem.map((id) => employees.find((user) => user._id === id)),
+            selectedItem.map((id) => employees.find((user) => user.id === id)),
           );
     }
 
@@ -243,82 +230,11 @@ function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
         const users = findUsers(inputValue);
         // const { classes } = this.props;
 
-        //TODO
-        // if (users.length === 0) {
-        //     const { employees, nonReceivers, me, employeeSetupStatus } = this.props;
-        //     if (
-        //       employees.length === 0 &&
-        //       nonReceivers.length === 0 &&
-        //       employeeSetupStatus === EMPLOYEES_SETUP_STATUSES.NO_EMPLOYEES
-        //     ) {
-        //       if (me && checkAdmin(me.role)) {
-        //         return (
-        //           <div
-        //             className={`${classes.inviteUsersDiv} justify-content-between align-items-center`}
-        //           >
-        //             <div>No one has joined yet.</div>
-        //             <Button
-        //               variant="contained"
-        //               color="primary"
-        //               onClick={this.sendInvitesClick}
-        //             >
-        //               SEND INVITES
-        //             </Button>
-        //           </div>
-        //         );
-        //       }
-        //     }
-        //     let altUsers = this.findAltUsers(inputValue, employees || []);
-        //     let altNonReceivers = this.findAltUsers(inputValue, nonReceivers || []);
-        //     altUsers = altUsers
-        //       ? altUsers.filter((user) => selectedItem.indexOf(user._id) === -1)
-        //       : [];
-        //     altNonReceivers = altNonReceivers || [];
-        //     return (
-        //       <div>
-        //         <div className={classes.noUserDiv}>
-        //           Can’t find anyone named “{inputValue}”…
-        //         </div>
-        //         {altUsers.length > 0 && (
-        //           <div>
-        //             <div className={classes.altUsersDiv}>
-        //               Did you mean one these coworkers?
-        //             </div>
-        //             {altUsers.map((user, index) =>
-        //               this.renderOption({
-        //                 user,
-        //                 index,
-        //                 itemProps: getItemProps({ item: user._id }),
-        //                 highlightedIndex,
-        //                 disabled: false,
-        //               }),
-        //             )}
-        //           </div>
-        //         )}
-        //         {altNonReceivers.length > 0 && (
-        //           <div>
-        //             <div className={classes.altUsersDiv}>
-        //               You cannot send carrots to these coworkers
-        //             </div>
-        //             {altNonReceivers.map((user, index) =>
-        //               this.renderOption({
-        //                 user,
-        //                 index: `${index}-non`,
-        //                 itemProps: getItemProps({ item: user._id }),
-        //                 highlightedIndex,
-        //                 disabled: true,
-        //               }),
-        //             )}
-        //           </div>
-        //         )}
-        //       </div>
-        //     );
-        // }
-
-            return users.map((user, index) => renderOption({
+        return users.map(
+            (user, index) => renderOption({
                 user,
                 index,
-                itemProps: getItemProps({item: user._id}),
+                itemProps: getItemProps({item: user.id}),
                 highlightedIndex,
                 disabled: false
             })
@@ -331,7 +247,7 @@ function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
             <MenuItem
                 {...itemProps}
                 disabled={disabled}
-                key={user._id}
+                key={user.id}
                 selected={isHighlighted}
                 classes={
                     { selected: classes.menuSelected}
@@ -344,27 +260,24 @@ function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
                 <span className={isHighlighted ? classes.autocomplete_user_username_focus
                     : classes.autocomplete_user_username }
                 >
-                    {`@${user.profile.username}`}
+                    {/* { || `@${user.profile.first_name}`} */}
+                    { user.profile.user_name ? `@${user.profile.user_name}` : `@${user.profile.first_name}`}
                 </span>
             </MenuItem>
         )
     }
 
     const findUsers = (inputValue) => {
-        // const employees = this.props.employees ? this.props.employees : [];
-        // const employees = props.employees || [];
-        // const { selectedItem } = this.state;
-        // employees mapStateToProps or declare dummy data
         let count = 0;
         return employees.filter((user) => {
-            const username = user.profile.username || '';
+            const username = user.profile.user_name || '';
             let keep = (
                 !inputValue ||
-                user.profile.firstName.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
-                user.profile.lastName.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
+                user.profile.first_name.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
+                user.profile.last_name.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
                 username.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
             ) && (count < 20);
-            if (selectedItem.indexOf(user._id) !== -1) {
+            if (selectedItem.indexOf(user.id) !== -1) {
                 keep = false;
             }
             if (keep) {
@@ -417,7 +330,7 @@ function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
                                     },
                                     InputProps: getInputProps({
                                         startAdornment: selectedItem.map((item) => { //selectedItem state
-                                            const user = employees.find((u) => u._id === item); //employee props
+                                            const user = employees.find((u) => u.id === item); //employee props
                                             if (user) {
                                                 return (
                                                     <Chip

@@ -58,7 +58,7 @@ export const getPostFormattedMessage = (text, taggedUsers) => {
             replacedText,
             MENTION_REGEX,
             (match, i) => {
-                const filteredEmployeeArr = taggedUsers.filter((employee) => employee._id === match).map((employee) => {
+                const filteredEmployeeArr = taggedUsers.filter((employee) => employee.id === match).map((employee) => {
                 // if (onUserClicked) {
                 //   return (
                 //     <span
