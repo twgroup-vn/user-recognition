@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import AdjustIcon from '@material-ui/icons/Adjust';
 import classNames from 'classnames';
-import { IconButton, Tooltip, Button } from '@material-ui/core';
+import { IconButton, Tooltip, Button, Popover } from '@material-ui/core';
 import { titleize } from '../assets/Util/text';
 import EmojiIcon from '@material-ui/icons/InsertEmoticon';
 import CameraIcon from '@material-ui/icons/AddAPhoto';
@@ -13,10 +13,11 @@ import { getImageForBadge } from '../assets/Util/BadgesInfo';
 import DSTypeAhead from './give-carrot/DSTypeAhead';
 import ImpactValueSelector from './give-carrot/ImpactValueSelector';
 import MessageInput from './give-carrot/MessageInput';
-import { EditorState, Modifier } from 'draft-js';
-import { getTextFromEditor, getMentionsToReplace, getLiteralTextFromEditor } from '../assets/Util/mention';
+import { EditorState } from 'draft-js';
+import { getTextFromEditor, getMentionsToReplace } from '../assets/Util/mention';
 import { GIVE_RECOGNITION_HEADER } from '../assets/Util/constants';
 import axios from 'axios';
+import BadgesSelector from './give-carrot/BadgesSelector';
 
 const StyledTabs = withStyles({
     root: {
@@ -26,7 +27,7 @@ const StyledTabs = withStyles({
       backgroundColor: '#EEEEEE',
     },
 })(Tabs);
-  
+
 const StyledTab = withStyles(() => ({
     root: {
         textTransform: 'none',
@@ -82,6 +83,10 @@ const useStyles = makeStyles((theme) => ({
     gc_button: {
         marginLeft: 10,
         marginRight: 10
+    },
+    add_emoji_img: {
+        width: 20,
+        height: 20
     }
 }));
 
@@ -127,13 +132,11 @@ function PostRecognition (props) {
     const [isMessageTipsVisible, setIsMessageTipsVisible] = useState(false);
     const [selectedMentions, setSelectedMentions] = useState([]);
     const [isFormSubmitting, setIsFormSubmitting] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
 
-
-    const handleTabChange = (event, newValue) => {
-        setSlideIndex(newValue);
-    };
-
+    //hardcode
     const canGivePoints = true;
+
     const canGiveCustomAmount = false;
 
     const badgeAttachability = true;
@@ -159,20 +162,23 @@ function PostRecognition (props) {
         }
     }
 
-    const getImageForBadgeIcon = () => {
-
-        if (selectedBadge) {
-          return getImageForBadge(selectedBadge, true);
-        }
-        
+    const handleTabChange = (event, newValue) => {
+        setSlideIndex(newValue);
     };
-    
-    const getImageTitleForBadge = () => {
 
+    const getImageForBadgeIcon = () => {
+        if (selectedBadge) {
+            return getImageForBadge(selectedBadge, true);
+        }
+
+    };
+
+    const getImageTitleForBadge = () => {
+        
         if (selectedBadge) {
             return selectedBadge.displayName;
         }
-        return 'Add Badge';
+        return 'Danh hiệu';
     };
 
     const handleTypeAheadUsers = (selectedUsersProps) => {
@@ -233,7 +239,7 @@ function PostRecognition (props) {
     const handleMessageInputFocus = () => {
         setIsMessageTipsVisible(true);
       };
-    
+
     const onAddMention = (props) => {
         // const { selectedMentions } = this.state;
         // selectedMentions.add(props.id);
@@ -297,13 +303,34 @@ function PostRecognition (props) {
 
     const giveButtonDisabled = shouldDisableGiveButton();
 
+    const onUpdateSelectedBadge = (badge) => {
+        if(selectedBadge) {
+            if(selectedBadge.name === badge.name) {
+                setSelectedBadge(null);
+                setAnchorEl(null);
+                return
+            }
+        }
+        setSelectedBadge(badge);
+        setAnchorEl(null);
+    }
+
+    const onAddBadgeClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    
+    const open = Boolean(anchorEl);
+
     const handleSubmit = (e, values={}) => {
         e.preventDefault();
 
         const mentionsToReplace = getMentionsToReplace(selectedMentions, mentionUsers)
 
         const message = getTextFromEditor(editorState, mentionsToReplace)
-        const literalMessage = getLiteralTextFromEditor(editorState);
+        // const literalMessage = getLiteralTextFromEditor(editorState);
 
         //mapping data
         const giveCarrots = {
@@ -315,7 +342,7 @@ function PostRecognition (props) {
         if (selectedBadge) {
             giveCarrots.badges = [selectedBadge.name];
         }
-        
+
         // if(impact) {
         //     giveCarrots.postImpact = props.impactData.find((item) => item.name === impact)
         // }
@@ -353,7 +380,7 @@ function PostRecognition (props) {
             </div>
             <form onSubmit={handleSubmit} className={classes.form_container}>
                 <div className={classes.p_16}>
-                    <div 
+                    <div
                         className={classNames(
                             'row',
                             'shoutout-user-select',
@@ -392,21 +419,6 @@ function PostRecognition (props) {
                             </div>
                         )
                     }
-                    {/* {coreValuesSetStatus && coreValues.length !== 0 && (
-                        <div
-                            className={classNames(
-                            'row',
-                            'shoutout-corevalue-select',
-                            classes.inputRowStyle,
-                            )}
-                        >
-                            <CoreValueSelector
-                            value={this.state.coreValue}
-                            onChange={this.handleCoreValue}
-                            options={coreValues}
-                            />
-                        </div>
-                    )} */}
                     <div className={classNames(
                                 'row',
                                 'shoutout-user-select',
@@ -426,30 +438,21 @@ function PostRecognition (props) {
                 </div>
                 <div className="justify-content-end align-items-center" style={{display: 'flex', padding: 14}}>
                     <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                        {/* {canGivePrivateMessage && (
-                            <Tooltip title="Give Privately" placement="top">
-                            <IconButton
-                                className={classNames(classes.iconButton, {
-                                [classes.iconButtonOn]: this.state.givePrivately,
-                                })}
-                                onClick={this.onGivePrivateClick}
-                                aria-label="Give Privately"
-                            >
-                                <VisibilityIcon />
-                            </IconButton>
-                            </Tooltip>
-                        )} */}
                         {
                             badgeAttachability && (
                                 <Tooltip title='Danh hiệu' placement='top'>
-                                    <IconButton className={classes.iconButton} aria-label='Danh hiệu'>
+                                    <IconButton
+                                        className={classes.iconButton}
+                                        aria-label='Danh hiệu'
+                                        onClick={onAddBadgeClick}
+                                    >
                                         {
                                             selectedBadge ? (
                                                 <img
-                                                    className='add-emoji-img'
+                                                    className={classes.add_emoji_img}
                                                     alt='badges'
-                                                    title={() => getImageTitleForBadge()}
-                                                    src={() => getImageForBadgeIcon()} />
+                                                    title={getImageTitleForBadge(selectedBadge)}
+                                                    src={getImageForBadgeIcon(selectedBadge)} />
                                             ) : (
                                             <AdjustIcon /> )
                                         }
@@ -487,29 +490,39 @@ function PostRecognition (props) {
                         </Tooltip>
                     </div>
                     <div className={classes.gc_button}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        type="submit"
-                        disabled={giveButtonDisabled}
-                    >
-                        {
-                        /* {givePrivately
-                        ? 'Give Privately'
-                        : titleize(GIVE_RECOGNITION)} */
-                        
-                        titleize('gửi lời cảm ơn')}
-                    </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            className={classes.button}
+                            type="submit"
+                            disabled={giveButtonDisabled}
+                        >
+                            {
+                            /* {givePrivately
+                            ? 'Give Privately'
+                            : titleize(GIVE_RECOGNITION)} */
+
+                            titleize('gửi lời cảm ơn')}
+                        </Button>
                     </div>
                 </div>
+                <Popover
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                >
+                    <BadgesSelector 
+                        updateSelected={(badge) => onUpdateSelectedBadge(badge)}
+                        selectedBadge={selectedBadge}
+                    />
+                </Popover>
             </form>
         </div>
     )
 }
-
-// PostRecognition = reduxForm({
-//     form: 'giveCarrotsForm', // a unique name for this form
-// })(PostRecognition);
 
 export default PostRecognition
