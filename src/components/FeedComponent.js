@@ -177,7 +177,7 @@ export const FeedValue = (props) => {
         <div className={classes.feed_card_carrots}>
             <div>{props.value}</div>
             <CarrotIcon
-                style={{ fontSize: 20, marginLeft: 5 }}
+                style={{ fontSize: 20, fontFamily: 'Segoe ui emoji' }}
                 active
                 url={props.customCompanyIcon}
             />

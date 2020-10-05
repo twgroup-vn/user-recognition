@@ -82,8 +82,8 @@ const renderAvatar = (card) => {
 const customCompanyIcon = {
     type: 'emoji',
     value: {
-        hexCode: "1F3C6",
-        id: "trophy"
+        hexCode: "02764",
+        id: "heart"
     }
 }
 
@@ -96,7 +96,7 @@ function FeedCard(props) {
     const { card } = props;
     const feedType = getter(['card', 'type'], card) || 'recognition';
     return (
-        <StyledCard key={card._id} className={classes.card}>
+        <StyledCard key={card.id} className={classes.card}>
             <div className={classes.feed_card_header}>
                 {renderAvatar(card)}
                 <div className={classes.feed_card_title}>
@@ -117,11 +117,11 @@ function FeedCard(props) {
                         {getAgoTime(card.created_at)}
                     </span>
                 </div>
-                {card.carrotsEach > 0 && (
+                {card.carrots_each > 0 && (
                     <div className={classes.feed_carrot_value}>
                     <FeedValue
                         customCompanyIcon={customCompanyIcon}
-                        value={ card.carrotsEach * card.to.users.length }
+                        value={ card.carrots_each * card.to.length }
                     />
                     </div>
                 )}
