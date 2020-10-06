@@ -75,19 +75,23 @@ const theme = createMuiTheme({
     },
     MuiButton: {
       root: {
+        boxShadow: 'none',
         '&:focus': {
           outline: 'none',
         },
       },
       containedPrimary: {
+        boxShadow: 'none',
         color: '#FFF',
         minWidth: 80,
-        backgroundColor: '#FF4400',
+        backgroundColor: '#EB6200',
         '&:hover': {
           color: '#FFF',
+          backgroundColor: '#F3933C'
         },
       },
       containedSecondary: {
+        boxShadow: 'none',
         color: '#FFF',
         '&:hover': {
           color: '#FFF',
@@ -107,9 +111,9 @@ const theme = createMuiTheme({
     fontWeightRegular: REGULAR,
     fontWeightSemibold: SEMIBOLD,
     fontWeightBold: BOLD,
-    fontSize: 14,
+    fontSize: 16,
     htmlFontSize: 16,
-    fontFamily: ['"Roboto"', 'sans-serif'].join(','),
+    fontFamily: ['"IBM Plex Sans"', 'sans-serif'].join(','),
   },
 });
 

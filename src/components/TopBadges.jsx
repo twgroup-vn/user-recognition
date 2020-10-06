@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     },
     top_receivers_name: {
         color: '#2c2c2c',
-        fontSize: 14,
+        // fontSize: 14,
         paddingRight: 40,
         overflow: 'hidden',
         textOverflow: 'ellipsis',

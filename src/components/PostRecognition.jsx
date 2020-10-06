@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
         color: '#FFFFFF',
         borderRadius: 4,
         minWidth: 140,
-        boxShadow: '0px 2px 3px rgba(0, 0, 0, 0.25)',
+        // boxShadow: '0px 2px 3px rgba(0, 0, 0, 0.25)',
         '&$disabled': {
           boxShadow: 'none',
         },
@@ -460,7 +460,7 @@ function PostRecognition (props) {
                                 </Tooltip>
                             )
                         }
-                        <Tooltip title="Biểu tượng cảm xúc" placement="top">
+                        {/* <Tooltip title="Biểu tượng cảm xúc" placement="top">
                             <IconButton
                                 className={classes.iconButton}
                                 // onClick={onEmojiClick}
@@ -487,7 +487,7 @@ function PostRecognition (props) {
                             >
                                 <GifIcon />
                             </IconButton>
-                        </Tooltip>
+                        </Tooltip> */}
                     </div>
                     <div className={classes.gc_button}>
                         <Button

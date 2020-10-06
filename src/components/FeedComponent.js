@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactHoverObserver from 'react-hover-observer';
-// import List from '@material-ui/core/List';
-// import ListItem from '@material-ui/core/ListItem';
-// import ListItemText from '@material-ui/core/ListItemText';
-// import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import { makeStyles } from '@material-ui/core';
 import classNames from 'classnames';
 import { getProfileFullName } from '../assets/Util/text';
 import { getBadgeObjectForName, getImageForBadge } from '../assets/Util/BadgesInfo';
 import CarrotIcon from './CarrotIcon';
+import { ProfilePic } from '../assets/Util/profilePic';
 
 const useStyle = makeStyles({
     feed_card_header_text: {
@@ -47,17 +48,30 @@ const useStyle = makeStyles({
         margin: '16px 0',
         padding: 12,
         color: '#2c2c2c'
+    },
+    users_list_container: {
+        position: 'relative',
+        cursor: 'pointer',
+        color: '#2C2C2C'
+    },
+    user_list_hover : {
+        position: 'absolute',
+        width: 300,
+        top: 20,
+        left: -10,
+        zIndex: 99,
+        borderRadius: 2,
+        fontSize: 14,
+        fontWeight: 400,
+        color: 'rgba(0, 0, 0, 0.87)',
+        backgroundColor: 'white',
+        transition: 'transform 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+        boxSizing: 'border-box',
+        WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
+        boxShadow: 'rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px',
+        overflowY: 'auto'
     }
 })
-
-// const UserNameComponent = (isHovering = false, users ) => {
-//     const onClick = (user) => {
-//         onUserClicked(user);
-//     };
-
-//     const usersToShow = Array.from(users);
-//     usersToShow.shift();
-// }
 
 const ClickableFromUserName = ({ user }) => {
     // const onClick = () => {
@@ -126,6 +140,47 @@ function FeedCardTitle(props) {
         }
     }
 
+    const UserNameComponent = (props) => {
+        const onClickListItem = (user) => {
+            // onUserClicked(user)
+            console.log('onUserClicked')
+        }
+        const usersToShow = Array.from(props.users);
+        usersToShow.shift();
+        return (
+            <div className={classes.users_list_container} style={{display: 'flex'}}>
+                <ClickableUserName 
+                    user={props.users[0]}
+                    isTo
+                    // onUserClicked={onUserClicked}
+                />
+                &nbsp;and {`${props.users.length - 1} others`}
+                {
+                    props.isHovering && (
+                        <div className={classes.user_list_hover}>
+                            <List>
+                                {
+                                    usersToShow.map((user) => (
+                                        <ListItem
+                                            button
+                                            key={user.id}
+                                            onClick={(user) => onClickListItem(user)}
+                                        >
+                                            <ListItemAvatar>
+                                                <ProfilePic size={40} user={user} />
+                                            </ListItemAvatar>
+                                            <ListItemText primary={getProfileFullName(user)} />
+                                        </ListItem>
+                                    ))
+                                }
+                            </List>
+                        </div>
+                    )
+                }
+            </div>
+        )
+    }
+
     return (
         <div className={classes.feed_card_header_text}>
             <ClickableFromUserName 
@@ -133,13 +188,13 @@ function FeedCardTitle(props) {
                 // onUserClicked={onUserClicked()}
             />
             {hasBadge()}
-            {props.to.length> 2 ? (
-                <span className={classes.feed_card_to}>
+            {props.to.length > 2 ? (
+                <span className={classes.feed_card_to} style={{ display: 'flex' }}>
                     <ReactHoverObserver>
-                        {/* <UserNameComponent
-                            users={to}
-                            onUserClicked={this.onUserClicked}
-                        /> */}
+                        <UserNameComponent
+                            users={props.to}
+                            // onUserClicked={onUserClicked}
+                        />
                     </ReactHoverObserver>
                 </span>
             ) : Number(props.to.length) === 1 ? (
