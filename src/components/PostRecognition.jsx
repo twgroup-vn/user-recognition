@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -134,6 +134,9 @@ function PostRecognition (props) {
     const [isFormSubmitting, setIsFormSubmitting] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
 
+    //token
+    const [token, setToken] = useState('')
+
     //hardcode
     const canGivePoints = true;
 
@@ -162,6 +165,22 @@ function PostRecognition (props) {
         }
     }
 
+    /*
+        get TOKEN
+    */
+    useEffect(() => {
+        const queryString = window.location.search;
+
+        const urlParams = new URLSearchParams(queryString);
+
+        const emailLogin = urlParams.get('email')
+
+        axios.post(`https://camon.twgroup.vn/api/v1/auth/user?email=${emailLogin}`)
+        .then((res) =>{
+            setToken(res.data.data.token);
+        })
+    },[])
+
     const handleTabChange = (event, newValue) => {
         setSlideIndex(newValue);
     };
@@ -182,31 +201,10 @@ function PostRecognition (props) {
     };
 
     const handleTypeAheadUsers = (selectedUsersProps) => {
-        // const { runHomeTour, canGivePoints } = this.props;
-        // const { tourStep } = this.state;
-        // if (runHomeTour && tourStep === TOUR_STEPS.SELECT_USER) {
-        // let nextStep = TOUR_STEPS.SELECT_CARROTS;
-        // if (!canGivePoints) nextStep = TOUR_STEPS.ADD_MESSAGE;
-        //     this.setState({
-        //         selectedUsers,
-        //         tourStep: nextStep,
-        //         internalTourState: null,
-        //     });
-        // }
-        // else {
-            // this.setState({ selectedUsers });
-        //}
         setSelectedUsers(selectedUsersProps);
     };
 
     const onUserInputFocus = () => {
-        // const { runHomeTour } = this.props;
-        // const { internalTourState, tourStep } = this.state;
-        // if (runHomeTour && tourStep === TOUR_STEPS.SELECT_USER) {
-        //     if (internalTourState !== 'paused') {
-        //       setInternalTourState('pause')
-        //     }
-        // }
     }
 
     const minMessageChar = {
@@ -359,7 +357,7 @@ function PostRecognition (props) {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Authorization': 'eyJhbGciOiJSUzI1NiJ9.eyJpZCI6IjQ1MjZlMjZlLWRkNjktNGYyZS1iYjVjLWUxNzBjMGUyOTU0NyIsImVtYWlsIjoieW5tQHR3Z3JvdXAudm4ifQ.hLwiPawwIoR2xUJ7EI-iM43aRl6F_j_1sBV0IBb_bD7l7y0Dgwzw5MSRIpn1b0ua8jrgiTGRWmRV8raemNEZIFWorqe3v1WAKjPNZTZMAZnT63ZBAXbLG3BJDQGs93bB6AbyTAFNubAj9hr8dRxbFT1fQps1guWcWe9Cf8VLi6uaCGyTXWBQadB2Y-KGJ0anaheoBYU-GG6enbQHdHoizuEPr9hbS-nf3ITfGd_QSHORsI7L6LPePzN2M7B6hppt63b8HXdjaKv_GxCF-M8IDl0GPJUnB0u_gjDMdV5zPW9mL9IDL6baMita4cgGXlWmfEVyNehNNIs4_TmIPn2bl_ZnqyEZkJ9baLmlK-7XSfOa5iQwPLhwplciogBVtbkg8zE2J9JXAqLyUNQxt2Te_w0IYAfcIcysewpDTc1yzlq7ZgfKLr5bgHTI9Nrr5YkrJJZwHXd_pdGf7IsUObBcx_LR_nvQ02cBxvFw5QdhvqpUcPuVeGIFAipzbBLNcU9R3r8tN2FzHFMmjyaxvUjMHZCJZAT6f1TZcDl9MIOC9FjPUsXf960YihlskkMRzHb_17zgHdAO0PJmT01LN7piDmR7ZtZdMspJSrXzrClI7BuuTRupAC-49yh0Us3pvCJLP6fJ6GzT-eKE4PdJemjbRWc2t2Ff0T2Yeh3T2A-uVl4'
+                'Authorization': token
             }
         }).then((res) => {
             console.log(res.data.data)

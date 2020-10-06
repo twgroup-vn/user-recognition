@@ -20,9 +20,9 @@ const StyledCard = withStyles({
 
 const useStyles = makeStyles((theme) => ({
     card: {
-        marginLeft: '5px',
-        marginRight: '5px',
-        marginBottom: '10px',
+        // marginLeft: '5px',
+        // marginRight: '5px',
+        marginBottom: '12px',
     },
     feed_card_header: {
         display: 'flex',

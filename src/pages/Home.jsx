@@ -12,10 +12,10 @@ import TopBadges from '../components/TopBadges';
 const useStyles = makeStyles((theme) => ({
     fixed_right_panel: {
         position: 'fixed',
-        top: 75,
+        top: 16,
         right: 0,
         overflowY: 'auto',
-        maxHeight: 'calc(100vh - 75px)'
+        maxHeight: 'calc(100vh - 16px)'
     },
 }));
 
@@ -30,15 +30,15 @@ function Home () {
     const badgeSetStatus = true;//setting
     // const coreValueSetStatus = true;//setting
     return (
-        <Container style={{marginTop: '35px'}}>
+        <Container fluid>
             <Row className='position-relative justify-content-start'>
-                <Col xs={6} md={6} lg={8}>
+                <Col xs={6} md={6} lg={7} style={{padding: '0 0 0 24px'}}>
                     <PostRecognition
                         switchBalanceTab={onHandleTabChange}
                     />
                     <Feed />
                 </Col>
-                <Col xs={6} md={6} lg={4} className={classes.fixed_right_panel}>
+                <Col xs={6} md={6} lg={5} style={{padding: '0 0 0 24px'}} className={classes.fixed_right_panel}>
                     <InfoRecognition 
                         slideIndex={balanceTabToShow}
                         onHandleChange={onHandleTabChange}
