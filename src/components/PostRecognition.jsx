@@ -6,14 +6,14 @@ import AdjustIcon from '@material-ui/icons/Adjust';
 import classNames from 'classnames';
 import { IconButton, Tooltip, Button, Popover } from '@material-ui/core';
 import { titleize } from '../assets/Util/text';
-import EmojiIcon from '@material-ui/icons/InsertEmoticon';
-import CameraIcon from '@material-ui/icons/AddAPhoto';
-import GifIcon from '@material-ui/icons/Gif';
+// import EmojiIcon from '@material-ui/icons/InsertEmoticon';
+// import CameraIcon from '@material-ui/icons/AddAPhoto';
+// import GifIcon from '@material-ui/icons/Gif';
 import { getImageForBadge } from '../assets/Util/BadgesInfo';
 import DSTypeAhead from './give-carrot/DSTypeAhead';
 import ImpactValueSelector from './give-carrot/ImpactValueSelector';
 import MessageInput from './give-carrot/MessageInput';
-import { EditorState } from 'draft-js';
+import { EditorState, convertToRaw } from 'draft-js';
 import { getTextFromEditor, getMentionsToReplace } from '../assets/Util/mention';
 import { GIVE_RECOGNITION_HEADER } from '../assets/Util/constants';
 import axios from 'axios';
@@ -266,6 +266,7 @@ function PostRecognition (props) {
         }
     ]
 
+    
     const shouldDisableGiveButton = () => {
         let giveButtonDisabled = true;
         // const {
@@ -277,13 +278,22 @@ function PostRecognition (props) {
         //     carrots,
         // } = this.state;
         const { canGivePoints, mePointsToGive } = props;
+        
+        const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
+        // const value = blocks.map(block => (!block.text.trim()) || block.text);
+        const value = blocks[0].text.trim();
+        
         const hasText = editorState.getCurrentContent().hasText();
 
         if (isFormSubmitting) {
             giveButtonDisabled = true;
         }
 
-        else if(selectedUsers.length > 0 && hasText) {
+        else if (selectedUsers.length > 0  && hasText && value === '') {
+            giveButtonDisabled = true;
+        }
+
+        else if(selectedUsers.length > 0 && hasText && value !== '') {
             if(!carrotError) {
                 if (!canGivePoints || Number(mePointsToGive) === 0) {
                     giveButtonDisabled = false;
