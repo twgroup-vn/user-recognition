@@ -21,6 +21,7 @@ const useStyles = makeStyles(() => ({
         color: 'rgba(223,223,223)',
         display: 'flex',
         justifyContent: 'space-between',
+        fontSize: '1rem'
     },
     underline: {
         '&:after': {

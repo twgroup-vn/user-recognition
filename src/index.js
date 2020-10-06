@@ -60,6 +60,9 @@ const theme = createMuiTheme({
       },
     },
     MuiInput: {
+      root: {
+        fontSize: '1rem',
+      },
       underline: {
         '&:after': {
           borderBottom: '2px solid #FF4400',
@@ -113,7 +116,7 @@ const theme = createMuiTheme({
     fontWeightBold: BOLD,
     fontSize: 16,
     htmlFontSize: 16,
-    fontFamily: ['"IBM Plex Sans"', 'sans-serif'].join(','),
+    fontFamily: ['IBM Plex Sans', 'sans-serif'].join(','),
   },
 });
 

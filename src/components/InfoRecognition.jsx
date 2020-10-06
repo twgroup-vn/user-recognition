@@ -52,7 +52,7 @@ const StyledTab = withStyles(() => ({
     root: {
         textTransform: 'none',
         color: '#2C2C2C',
-        fontSize: 14,
+        // fontSize: 16,
         fontWeight: 'bold',
         letterSpacing: '.5px',
         '&:focus': {

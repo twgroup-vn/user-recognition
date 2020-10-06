@@ -54,14 +54,14 @@ const useStyles = makeStyles((theme) => ({
     },
     feed_carrot_time: {
         color: 'rgba(0,0,0,.54)',
-        fontSize: 14
+        // fontSize: 14
     },
     feed_card_message: {
         color: '#2c2c2c',
         padding: '0 16px 16px',
         whiteSpace: 'pre-wrap',
         fontWeight: 400,
-        fontSize: 14
+        // fontSize: 14
     }
 }));
 

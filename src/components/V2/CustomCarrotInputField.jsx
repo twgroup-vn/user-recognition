@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
         height: 44,
         border: `1px solid ${themeV2.palette.lightGray1}`,
         fontFamily: themeV2.typography.fontFamily,
-        fontSize: 16,
+        // fontSize: 16,
         '&:focus': {
           outline: '0',
         },

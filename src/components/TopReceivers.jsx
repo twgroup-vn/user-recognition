@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     },
     right_column_header_text: {
         fontWeight: 700,
-        fontSize: 16,
+        // fontSize: 16,
         color: '#2c2c2c',
         flexGrow: 1
     },

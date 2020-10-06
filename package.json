@@ -34,11 +34,8 @@
     "react-hover-observer": "^2.1.1",
     "react-image": "^4.0.3",
     "react-infinite-scroll-component": "^5.1.0",
-    "react-redux": "^7.2.1",
     "react-scripts": "3.4.3",
     "react-string-replace": "^0.4.4",
-    "redux": "^4.0.5",
-    "redux-form": "^8.3.6",
     "websocket-extensions": "^0.1.4"
   },
   "scripts": {

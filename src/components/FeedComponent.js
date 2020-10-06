@@ -24,12 +24,12 @@ const useStyle = makeStyles({
     feed_card_from: {
         fontWeight: 600,
         whiteSpace: 'normal',
-        fontSize: 14
+        // fontSize: 14
     },
     feed_card_to: {
         fontWeight: 600,
         whiteSpace: 'normal',
-        fontSize: 14
+        // fontSize: 14
     },
     feed_card_badge_img: {
         width: 20,
