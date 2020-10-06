@@ -270,12 +270,14 @@ function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
     const findUsers = (inputValue) => {
         let count = 0;
         return employees.filter((user) => {
-            const username = user.profile.user_name || '';
+            const userName = user.profile.user_name || '';
+            const firstName = user.profile.first_name || '';
+            const lastName = user.profile.last_name || '';
             let keep = (
                 !inputValue ||
-                user.profile.first_name.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
-                user.profile.last_name.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
-                username.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
+                firstName.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
+                lastName.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
+                userName.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
             ) && (count < 20);
             if (selectedItem.indexOf(user.id) !== -1) {
                 keep = false;
