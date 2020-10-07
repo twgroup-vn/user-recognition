@@ -1,4 +1,4 @@
-const GIVE_RECOGNITION_HEADER = 'Lời cám ơn';
+const GIVE_RECOGNITION_HEADER = 'Lời cảm ơn';
 
 export {
     GIVE_RECOGNITION_HEADER

@@ -239,9 +239,6 @@ function PostRecognition (props) {
       };
 
     const onAddMention = (props) => {
-        // const { selectedMentions } = this.state;
-        // selectedMentions.add(props.id);
-        // this.setState({ selectedMentions });
         selectedMentions.push(props.id);
         setSelectedMentions(selectedMentions);
     };
@@ -269,38 +266,24 @@ function PostRecognition (props) {
     
     const shouldDisableGiveButton = () => {
         let giveButtonDisabled = true;
-        // const {
-        //     isFormSubmitting,
-        //     selectedUsers,
-        //     editorState,
-        //     carrotError,
-        //     carrotsTouched,
-        //     carrots,
-        // } = this.state;
-        const { canGivePoints, mePointsToGive } = props;
+        
+        // const { canGivePoints, mePointsToGive } = props; //hardcode
         
         const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
-        // const value = blocks.map(block => (!block.text.trim()) || block.text);
         const value = blocks[0].text.trim();
         
         const hasText = editorState.getCurrentContent().hasText();
 
         if (isFormSubmitting) {
             giveButtonDisabled = true;
-        }
-
-        else if (selectedUsers.length > 0  && hasText && value === '') {
-            giveButtonDisabled = true;
-        }
-
-        else if(selectedUsers.length > 0 && hasText && value !== '') {
+        } else if (selectedUsers.length > 0  && hasText && value !== '') {
             if(!carrotError) {
-                if (!canGivePoints || Number(mePointsToGive) === 0) {
-                    giveButtonDisabled = false;
+                if(!canGivePoints || Number(mePointsToGive) === 0) {
+                    giveButtonDisabled = true;
                 }
-                else if (canGivePoints && carrotsTouched) {
+                else if(canGivePoints && carrotsTouched) {
                     if (selectedUsers.length * carrots <= mePointsToGive) {
-                      giveButtonDisabled = false;
+                        giveButtonDisabled = false;
                     }
                 }
             }
@@ -371,6 +354,7 @@ function PostRecognition (props) {
             }
         }).then((res) => {
             console.log(res.data.data)
+            
         })
 
     }

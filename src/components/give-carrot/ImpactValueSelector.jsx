@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import CustomImpactModal from './CustomImpactModal';
@@ -90,12 +90,21 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
     const [menuOpen, setMenuOpen] = useState(false);
     const [subSelectOpen, setSubSelectOpen] = useState(false);
     const [customImpactModalOpen, setCustomImpactModalOpen] = useState(false);
+    const [impactValueSelector, setImpactValueSelector] = useState('');
+
     const classes = useStyles();
 
     //cpndidupdate
-    // useEffect(() => {
-        
-    // })
+    useEffect(() => {
+        if(impactValueSelector) {
+            setInputIconOn(true)
+        }
+        else {
+            setInputIconOn(false)
+       }
+
+    }, [impactValueSelector]);
+
     const placeholder = 'Tặng tim';
     let maxPointsToGive = props.mePointsToGive;
 
@@ -114,18 +123,6 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
         }
         return true;
     })
-
-    // const {
-    //     classes,
-    //     carrots,
-    //     options,
-    //     canGiveCustomAmount,
-    //     mePointsToGive,
-    //     selectedUsers,
-    //     canGivePoints,
-    //     customCurrency,
-    //     customCompanyIcon,
-    //   } = this.props;
 
     const handleOpen = () => {
         props.onImpactOpen();
@@ -148,6 +145,7 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
 
     const onImpactSelected = (impact, carrots) => {
         props.onChange(impact, carrots);
+        setImpactValueSelector(impact);
         closeSelect();
     }
 
@@ -161,8 +159,7 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
         if( props.impact || props.carrots ) {
             setInputIconOn(true);
         } else {
-            //setInputIconOn(false);
-            setInputIconOn(true);//needwriteincpndidupdate
+            setInputIconOn(false);
         }
     };
 

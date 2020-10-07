@@ -200,7 +200,8 @@ function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
         const postSelectedItem = [...selectedItem];
         postSelectedItem.splice(selectedItem.indexOf(item), 1);
         setSelectedItem(postSelectedItem);
-        handleUserInputIconStyleOff(selectedItem);
+        // updateUsersToParent(postSelectedItem);
+        handleUserInputIconStyleOff(postSelectedItem);
     };
 
     const onUserInputFocus = () => {
