@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { getBadgeObjectForName, getImageForBadge } from '../assets/Util/BadgesInfo';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     right_column_box: {
@@ -63,29 +64,22 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
-
-const topBadges = [
-    {
-        count: 2,
-        id: "detail_master"
-    },
-    {
-        count: 1,
-        id: "teamwork"
-    },
-    {
-        count: 2,
-        id: "culture"
-    },
-    {
-        count: 2,
-        id: "closer"
-    }
-]
-
 function TopBadges() {
+    useEffect(() => {
+        axios.get('https://camon.twgroup.vn/api/v1/home/sidebar', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'eyJhbGciOiJSUzI1NiJ9.eyJpZCI6IjE0NWRjNGI3LWQyODEtNDIzNi1hZjYwLWM2MmI3NDk3YmVjYSIsImVtYWlsIjoicGhhdGx0QHR3Z3JvdXAudm4ifQ.Ft8bNFXhOSbFneB_A4_zqzM3QMpzOEpHUo-OuAOJAC-nDqb3M1S0mGtqcMhadbdP8LP0fws9ecK3FNgvazKf1btp6Ojg5hCxORy2Wc8LAohb_cl4T3_DKy44XvYkVKM8zX61WLud2yUcTrpe46cbX80n6ItahSNvvQNtR0j_x-BzeaSr0MX13hrftKqGdFZGG6NKOS9THEHzNLXhkcG3m4vxXv3rNPyeDMQIimw3EF2FNjBNhZJff2Dj0_QtullEm26hf4NrS5ZjZBPJJo6SgSH7-M4hrOtPTAhLB0_QsBJm6W4Oq9OYd-cxe470WpeSz1TIPuVLJV9TEKW95lcDK-SXBH781xwxvr3WLpbK7qe-RdGnEOl1ymnoJAH7TpIWCAsiVUOmob3xjUDrvuylLACQ43k5sfh4au9vch9-AIR74US0uIdJZGfnPeUGc4QMz8rrlztnRhdvLBwErWkqg-lebjICvWg-5GQm6FPmpalNxTBB1QX20B-3Hg1hr8LqiptVWhn6156DSRwxjLCgyaQrsq707fseYZbKDRi35VVus9dMhCTVlQ11SH2TLOpd8n1EeHsL3ESObtdXzNFrVKgKAVnQawWnYM1ZEim4yzaVBbHgKqB2QKCupdj-U6pMH0oVA8t1se0RuRMageF4_TRlAnOC1Oq2z0Lhmv_VAlI'
+            }
+        }).then((res) => {
+            setTopBadges(res.data.data.top_badges)
+        })
+    }, [])
+
     const classes = useStyles();
+
+    const [topBadges, setTopBadges] = useState([]);
 
     const BadgeText = (props) => {
         const badgeObj = getBadgeObjectForName(props.name);
@@ -110,11 +104,11 @@ function TopBadges() {
                     {
                         (topBadges && topBadges.length > 0) ?
                             topBadges.map((badge) => (
-                                <div key={badge.id} className={classNames(
+                                <div key={badge.name} className={classNames(
                                     'row',
                                     'justify-content-start',
                                     classes.top_receivers_row_div)}>
-                                        <BadgeText name={badge.id} />
+                                        <BadgeText name={badge.name} />
                                         <div className={classNames(classes.top_receivers_carrots, classes.top_receivers_carrots_text)}>
                                             {badge.count}
                                         </div>

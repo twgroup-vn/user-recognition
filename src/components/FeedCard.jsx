@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { getter } from '../assets/Util/object';
 import { ProfilePic } from '../assets/Util/profilePic';
@@ -6,6 +6,10 @@ import { getAgoTime } from '../assets/Util/time';
 import { getPostFormattedMessage } from '../assets/Util/text';
 import FeedCardTitle, { FeedValue } from './FeedComponent';
 import Card from '@material-ui/core/Card';
+import IconButton from '@material-ui/core/IconButton';
+import FavourtieIcon from '@material-ui/icons/Favorite';
+import classNames from 'classnames';
+import axios from 'axios';
 
 const StyledCard = withStyles({
     root: {
@@ -62,7 +66,30 @@ const useStyles = makeStyles((theme) => ({
         whiteSpace: 'pre-wrap',
         fontWeight: 400,
         // fontSize: 14
-    }
+    },
+    feed_card_action: {
+        padding: '0 14px 6px',
+        display: 'flex',
+        justifyContent: 'flex-start'
+    },
+    iconButton: {
+        color: '#9E9E9E',
+        '&:focus': {
+          outline: 'none',
+        },
+    },
+    commentOn: {
+        color: '#0AD71C',
+    },
+    heartOn: {
+        color: '#FF0266',
+    },
+    privateIcon: {
+        marginRight: 5,
+    },
+    taggedUser: {
+        color: 'red',
+    },
 }));
 
 const renderAvatar = (card) => {
@@ -89,12 +116,37 @@ const customCompanyIcon = {
 
 function FeedCard(props) {
     const classes = useStyles();
-    // const [showEnterComment, setShowEnterComment] = useState();
-    // const [menuAnchorEl, setMenuAnchorEl] = useState(null);
-    // const [isRemoveMediaAlertOpen, setIsRemoveMediaAlertOpen] = useState(false);
-    // const [isDeletePostModalOpen, setIsDeletePostModalOpen] = useState(false);
-    const { card } = props;
+    const { card }= props;
+    // const [cardState, setCardState] = useState(props.card)
     const feedType = getter(['card', 'type'], card) || 'recognition';
+    const [didILike, setDidILike] = useState();
+    const me = sessionStorage.getItem('id');
+    const token = sessionStorage.getItem('token');
+    
+    useEffect(() => {
+        props.card.likes.find((user) => (setDidILike(user.id === me)));
+
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    const onFavouriteClick = () => {
+        //callAPI
+        axios.get(`https://camon.twgroup.vn/api/v1/feed/${card.id}/like`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': token
+            }
+        }).then((res) => {
+            //setCardState(res.data.data);
+            setDidILike(!didILike)
+
+        })
+    }
+
+    
+
     return (
         <StyledCard key={card.id} className={classes.card}>
             <div className={classes.feed_card_header}>
@@ -142,6 +194,26 @@ function FeedCard(props) {
                     card.taggedUsers
                     // this.onUserClicked,
                 )}
+            </div>
+            <div className={classes.feed_card_action}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', }}>
+                    <div style={{ display: 'flex' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <IconButton
+                                onClick={onFavouriteClick}
+                                className={
+                                    didILike
+                                    ? classNames(classes.iconButton, classes.heartOn)
+                                    : classes.iconButton
+                                }
+                                component="span"
+                                aria-label="Favourite"
+                            >
+                                <FavourtieIcon />
+                            </IconButton>
+                        </div>
+                    </div>
+                </div>
             </div>
         </StyledCard>
     )

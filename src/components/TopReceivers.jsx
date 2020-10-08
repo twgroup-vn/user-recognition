@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button';
 import DropIcon from '@material-ui/icons/ArrowDropDown';
@@ -6,6 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import DropdownMenu from '../components/DropdownMenu';
 import { getProfileFullName } from '../assets/Util/text';
 import classNames from 'classnames';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     right_column_box: {
@@ -83,73 +84,23 @@ const StyledButton = withStyles({
     },
 })(Button);
 
-const topReceivers = [//call API to get list
-    {
-        id: '0',
-        count: 6,
-        user: {
-            pointsEarned: 90,
-            pointsEarnedThisMonth: 90,
-            pointsGiven: 50,
-            totalPointsEarned: 90,
-            totalPointsGiven: 50,
-            profile: {
-                first_name: 'Võ',
-                last_name: 'Minh Nguyệt'
-            }
-        }
-    },
-    {
-        id: '1',
-        count: 4,
-        user: {
-            pointsEarned: 60,
-            pointsEarnedThisMonth: 60,
-            pointsGiven: 20,
-            totalPointsEarned: 60,
-            totalPointsGiven: 20,
-            profile: {
-                first_name: 'Võ',
-                last_name: 'Xuân Bách'
-            }
-        }
-    },
-    {
-        id: '2',
-        count: 3,
-        user: {
-            pointsEarned: 60,
-            pointsEarnedThisMonth: 60,
-            pointsGiven: 20,
-            totalPointsEarned: 60,
-            totalPointsGiven: 20,
-            profile: {
-                first_name: 'Nguyễn',
-                last_name: 'Minh Ý'
-            }
-        }
-    },
-    {
-        id: '3',
-        count: 1,
-        user: {
-            pointsEarned: 20,
-            pointsEarnedThisMonth: 20,
-            pointsGiven: 40,
-            totalPointsEarned: 20,
-            totalPointsGiven: 40,
-            profile: {
-                first_name: 'Trương',
-                last_name: 'Quốc Huy'
-            }
-        }
-    }
-]
-
 function TopReceivers() {
     const classes = useStyles();
+    const [topEarnedUsers , setTopEarnedUsers] = useState([])
     const [value, setValue] = useState(1);
     const [anchorEl, setAnchorEl] = useState(null);
+
+    useEffect(()=> {
+        axios.get('https://camon.twgroup.vn/api/v1/home/sidebar', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'eyJhbGciOiJSUzI1NiJ9.eyJpZCI6IjE0NWRjNGI3LWQyODEtNDIzNi1hZjYwLWM2MmI3NDk3YmVjYSIsImVtYWlsIjoicGhhdGx0QHR3Z3JvdXAudm4ifQ.Ft8bNFXhOSbFneB_A4_zqzM3QMpzOEpHUo-OuAOJAC-nDqb3M1S0mGtqcMhadbdP8LP0fws9ecK3FNgvazKf1btp6Ojg5hCxORy2Wc8LAohb_cl4T3_DKy44XvYkVKM8zX61WLud2yUcTrpe46cbX80n6ItahSNvvQNtR0j_x-BzeaSr0MX13hrftKqGdFZGG6NKOS9THEHzNLXhkcG3m4vxXv3rNPyeDMQIimw3EF2FNjBNhZJff2Dj0_QtullEm26hf4NrS5ZjZBPJJo6SgSH7-M4hrOtPTAhLB0_QsBJm6W4Oq9OYd-cxe470WpeSz1TIPuVLJV9TEKW95lcDK-SXBH781xwxvr3WLpbK7qe-RdGnEOl1ymnoJAH7TpIWCAsiVUOmob3xjUDrvuylLACQ43k5sfh4au9vch9-AIR74US0uIdJZGfnPeUGc4QMz8rrlztnRhdvLBwErWkqg-lebjICvWg-5GQm6FPmpalNxTBB1QX20B-3Hg1hr8LqiptVWhn6156DSRwxjLCgyaQrsq707fseYZbKDRi35VVus9dMhCTVlQ11SH2TLOpd8n1EeHsL3ESObtdXzNFrVKgKAVnQawWnYM1ZEim4yzaVBbHgKqB2QKCupdj-U6pMH0oVA8t1se0RuRMageF4_TRlAnOC1Oq2z0Lhmv_VAlI'
+            }
+        }).then((res) => {
+            setTopEarnedUsers(res.data.data.top_earned_users)
+        })
+    },[])
 
     const handleOptionClick = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -187,7 +138,7 @@ function TopReceivers() {
     
     const getTopReceiversSorted = () => {
         
-        let sorted = topReceivers.sort((a, b) => a.count < b.count);
+        let sorted = topEarnedUsers.sort((a, b) => a.count < b.count);
         sorted = sorted.length > 5 ? sorted.slice(0, 5) : sorted;
         return sorted;
     };
@@ -206,7 +157,7 @@ function TopReceivers() {
       buttonLabel = 'All Time';
     }
 
-    const isEmpty = topReceivers.length === 0;
+    const isEmpty = topEarnedUsers.length === 0;
 
     const CarrotText = (props) => (
       <div className={classes.top_receivers_carrots}>
@@ -273,12 +224,12 @@ function TopReceivers() {
             {!isEmpty ?
             (
                 getTopReceiversSorted().map((receiver) => (
-                    <div key={receiver.id} className={classNames(
+                    <div key={receiver.user.id} className={classNames(
                         'row',
                         'justify-content-start',
                         classes.top_receivers_row_div)}>
                         <div className={classes.top_receivers_name} style={{cursor: 'pointer'}} 
-                            onClick={() => this.onUserClicked(receiver.user)}>
+                            onClick={() => onUserClicked(receiver.user)}>
                             {getProfileFullName(receiver.user)}
                         </div>
                         <CarrotText value={receiver.count} />

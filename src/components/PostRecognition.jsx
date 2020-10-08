@@ -178,6 +178,9 @@ function PostRecognition (props) {
         axios.post(`https://camon.twgroup.vn/api/v1/auth/user?email=${emailLogin}`)
         .then((res) =>{
             setToken(res.data.data.token);
+            //TODO
+            sessionStorage.setItem('id', res.data.data.user.id);
+            sessionStorage.setItem('token', res.data.data.token);
         })
     },[])
 
