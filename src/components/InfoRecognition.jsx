@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import CarrotIcon from './CarrotIcon';
 import moment from 'moment';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     balance_container: {
@@ -12,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 2,
         marginBottom: 10,
     },
-    reem_container: {
+    redeem_container: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -88,14 +89,14 @@ function Balance (props) {
                     showEarnedBalance && <StyledTab value={0} label="Số ❤️ nhận được" />
                 }
                 {
-                    showAllowance && <StyledTab value={1} label="Số ❤️ cho đi" />
+                    showAllowance && <StyledTab value={1} label="Số ❤️ còn lại" />
                 }
             </StyledTabs>
             {
                 slideIndex === 0 && (
-                    <div className={classes.reem_container}>
+                    <div className={classes.redeem_container}>
                         <div className={classes.balance_carrots}>
-                            100
+                            {sessionStorage.getItem('points_earned')}
                             <CarrotIcon
                                 style={{fontSize: 24, fontFamily: 'Segoe UI Emoji'}}
                                 active
@@ -106,13 +107,10 @@ function Balance (props) {
             }
             {
                 slideIndex === 1 && (
-                    <div className={classes.reem_container}>
+                    <div className={classes.redeem_container}>
                         <div className={classes.balance_carrots}>
                             <div>
-                                {/* {this.props.mePointsToGive !== null
-                                ? this.props.mePointsToGive
-                                : ''} */}
-                                200
+                                {sessionStorage.getItem('remaining_point')}
                             </div>
                             <CarrotIcon
                                 style={{ fontSize: 24, fontFamily: 'Segoe UI Emoji' }}
@@ -122,14 +120,14 @@ function Balance (props) {
                         </div>
                         <div className={classes.giving_container}>
                             <div className={classes.remaining_container}>
-                                Remaining Allowance
+                                Số dư
                             </div>
                             <div className={classes.date_container}>
-                                Refreshes on:{' '}
+                                Được làm mới vào ngày:{' '}
                                 {moment()
                                 .add(1, 'months')
                                 .startOf('month')
-                                .format('M/D/YY')}
+                                .format('D/M/YY')}
                             </div>
                         </div>
                     </div>

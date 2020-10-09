@@ -181,6 +181,8 @@ function PostRecognition (props) {
             //TODO
             sessionStorage.setItem('id', res.data.data.user.id);
             sessionStorage.setItem('token', res.data.data.token);
+            sessionStorage.setItem('points_earned', res.data.data.user.points_earned);
+            sessionStorage.setItem('remaining_point', res.data.data.user.remaining_point);
         })
     },[])
 

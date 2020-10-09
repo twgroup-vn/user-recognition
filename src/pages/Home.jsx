@@ -30,15 +30,15 @@ function Home () {
     const badgeSetStatus = true;//setting
     // const coreValueSetStatus = true;//setting
     return (
-        <Container fluid>
+        <Container>
             <Row className='position-relative justify-content-start'>
-                <Col xs={6} md={6} lg={7} style={{padding: '0 0 0 24px'}}>
+                <Col xs={6} md={6} lg={8} style={{padding: '0px'}}>
                     <PostRecognition
                         switchBalanceTab={onHandleTabChange}
                     />
                     <Feed />
                 </Col>
-                <Col xs={6} md={6} lg={5} style={{padding: '0 0 0 24px'}} className={classes.fixed_right_panel}>
+                <Col xs={6} md={6} lg={4} style={{padding: '0 32px'}} className={classes.fixed_right_panel}>
                     <InfoRecognition 
                         slideIndex={balanceTabToShow}
                         onHandleChange={onHandleTabChange}

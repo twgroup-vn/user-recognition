@@ -121,20 +121,20 @@ function FeedCardTitle(props) {
         if (badge) {
             return (
                 <span className={classes.feed_card_gave}>
-                    &nbsp;recognized and gave a{' '}
+                    &nbsp;đã cảm ơn và trao danh hiệu{' '}
                     <img className={classes.feed_card_badge_img}
                         alt={badge.displayName}
                         title={badge.displayName}
                         src={getImageForBadge(badge, true)}
                     />
-                    {badge.displayName} badge to&nbsp;
+                    {badge.displayName} cho&nbsp;
                 </span>
             )
         }
         else {
             return (
                 <span className={classes.feed_card_gave} style={{ display: 'contents', marginBottom: 0 }}>
-                    &nbsp;recognized&nbsp;
+                    &nbsp;đã cảm ơn&nbsp;
                 </span>
             )
         }

@@ -144,9 +144,6 @@ function FeedCard(props) {
 
         })
     }
-
-    
-
     return (
         <StyledCard key={card.id} className={classes.card}>
             <div className={classes.feed_card_header}>
