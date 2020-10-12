@@ -11,6 +11,7 @@ import { ProfilePic } from '../../assets/Util/profilePic';
 import keycode from 'keycode';
 import Downshift from 'downshift';
 import axios from 'axios';
+import { StoreContext } from '../../store/StoreContext';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -118,19 +119,14 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const token = sessionStorage.getItem('token');
-
-function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
-    const { handleUsers, onFocus } = props;
+function DSTypeAhead(props) {
+    const { handleUsers, onFocus, selectedItem, userInputIconOn, onUserInputIconOn } = props;
     const [ inputValue, setInputValue ] = useState('');
-    const [ selectedItem, setSelectedItem ] = useState([]);
-    const [ userInputIconOn, setUserInputIconOn ] = useState(false);
-    const [ employees, setEmployees] = useState();
+    //const [ userInputIconOn, setUserInputIconOn ] = useState(false);
 
-    useEffect(() => {
-        updateUsersToParent(selectedItem);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedItem])
+    const [ employees, setEmployees] = useState();
+    const { token } = React.useContext(StoreContext);
+    const classes = useStyles();
 
     useEffect(() => {
         async function fetchEmployees() {
@@ -145,16 +141,8 @@ function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
             
         }
         fetchEmployees()
-    }, [])
-
-    const classes = useStyles();
+    }, [token])
     
-    const updateUsersToParent = (selectedItem) => {
-        handleUsers(
-            selectedItem.map((id) => employees.find((user) => user.id === id)),
-          );
-    }
-
     const renderInput = (inputProps) => {
         const { InputProps, classes, ref, ...other } = inputProps;
         return (
@@ -194,20 +182,19 @@ function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
         if (selectedItem.indexOf(item) === -1) {//not found
             let postSelectedItem = [...selectedItem, item];
             setInputValue('');
-            setSelectedItem(postSelectedItem);
+            handleUsers(postSelectedItem);
         }
     };
 
     const handleDelete = (item) => () => {
         const postSelectedItem = [...selectedItem];
         postSelectedItem.splice(selectedItem.indexOf(item), 1);
-        setSelectedItem(postSelectedItem);
-        // updateUsersToParent(postSelectedItem);
+        handleUsers(postSelectedItem);
         handleUserInputIconStyleOff(postSelectedItem);
     };
 
     const onUserInputFocus = () => {
-        setUserInputIconOn(true);
+        onUserInputIconOn(true);
         onFocus();
     }
 
@@ -217,22 +204,19 @@ function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
 
     const handleUserInputIconStyleOff = (selectedUsers) => {
         if( selectedUsers.length === 0 ) {
-            setUserInputIconOn(false);
+            onUserInputIconOn(false);
         }
     }
 
     const handleKeyDown = (e) => {
         if ( selectedItem.length && !inputValue.length && keycode(e) === 'backspace' ) {
             const postSelectedItem = selectedItem.slice(0, selectedItem.length - 1);
-            setSelectedItem(postSelectedItem);
+            handleUsers(postSelectedItem)
         }
     };
 
     const renderOptions = (inputValue, getItemProps, highlightedIndex) => {
-        // const { selectedItem } = this.state;
         const users = findUsers(inputValue);
-        // const { classes } = this.props;
-
         return users.map(
             (user, index) => renderOption({
                 user,
@@ -263,7 +247,6 @@ function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
                 <span className={isHighlighted ? classes.autocomplete_user_username_focus
                     : classes.autocomplete_user_username }
                 >
-                    {/* { || `@${user.profile.first_name}`} */}
                     { user.profile.user_name ? `@${user.profile.user_name}` : `@${user.profile.first_name}`}
                 </span>
             </MenuItem>
@@ -281,8 +264,6 @@ function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
             let keep = (
                 !inputValue ||
                 firstName.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
-                // lastName.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
-                // userName.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
                 email.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
             ) && (count < 20);
             if (selectedItem.indexOf(user.id) !== -1) {
@@ -307,7 +288,7 @@ function DSTypeAhead(props) {//props: handleUsers, onFocus, onBlur
                         getItemProps,
                         isOpen,
                         inputValue: inputValue2,
-                        selectedItem: selectedItem2,
+                        //selectedItem: selectedItem2,
                         highlightedIndex,
                         openMenu,
                         closeMenu

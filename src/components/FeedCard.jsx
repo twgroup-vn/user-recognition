@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { getter } from '../assets/Util/object';
 import { ProfilePic } from '../assets/Util/profilePic';
@@ -7,9 +7,10 @@ import { getPostFormattedMessage } from '../assets/Util/text';
 import FeedCardTitle, { FeedValue } from './FeedComponent';
 import Card from '@material-ui/core/Card';
 import IconButton from '@material-ui/core/IconButton';
-import FavourtieIcon from '@material-ui/icons/Favorite';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import classNames from 'classnames';
 import axios from 'axios';
+import { StoreContext } from '../store/StoreContext';
 
 const StyledCard = withStyles({
     root: {
@@ -82,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
         color: '#0AD71C',
     },
     heartOn: {
-        color: '#FF0266',
+        color: '#2772FE',
     },
     privateIcon: {
         marginRight: 5,
@@ -117,19 +118,11 @@ const customCompanyIcon = {
 function FeedCard(props) {
     const classes = useStyles();
     const { card }= props;
-    // const [cardState, setCardState] = useState(props.card)
+    
     const feedType = getter(['card', 'type'], card) || 'recognition';
-    const [didILike, setDidILike] = useState();
-    const me = sessionStorage.getItem('id');
-    const token = sessionStorage.getItem('token');
+    const [didILike, setDidILike] = useState(card.liked);
+    const { token } = React.useContext(StoreContext);
     
-    useEffect(() => {
-        props.card.likes.find((user) => (setDidILike(user.id === me)));
-
-    
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
     const onFavouriteClick = () => {
         //callAPI
         axios.get(`https://camon.twgroup.vn/api/v1/feed/${card.id}/like`, {
@@ -144,6 +137,7 @@ function FeedCard(props) {
 
         })
     }
+
     return (
         <StyledCard key={card.id} className={classes.card}>
             <div className={classes.feed_card_header}>
@@ -174,16 +168,6 @@ function FeedCard(props) {
                     />
                     </div>
                 )}
-                {/* {mediaUrl && mediaUrl.length > 0 && isImage ? (
-                    <div className="feed-image__div">
-                        <Img className="media__Image" alt="media" src={mediaUrl} />
-                    </div>
-                    ) : (
-                    <div className="feed-media__div">
-                        <Img className="media__Image" alt="media" src={mediaUrl} />
-                    </div>
-                )} */}
-                
             </div>
             <div className={classes.feed_card_message}>
                 {getPostFormattedMessage(
@@ -206,7 +190,7 @@ function FeedCard(props) {
                                 component="span"
                                 aria-label="Favourite"
                             >
-                                <FavourtieIcon />
+                                <ThumbUpIcon />
                             </IconButton>
                         </div>
                     </div>

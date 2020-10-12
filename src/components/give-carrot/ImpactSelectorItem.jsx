@@ -111,7 +111,7 @@ function ImpactSelectorItem(props) {//props: impact,onValueChange,defaultValue,a
     let multipleUserText = '';
 
     if (props.selectedUsers.length > 1) {
-        multipleUserText = 'each';
+        multipleUserText = 'mỗi người';
     }
 
     const onOptionSelect = () => {

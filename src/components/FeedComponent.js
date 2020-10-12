@@ -154,7 +154,7 @@ function FeedCardTitle(props) {
                     isTo
                     // onUserClicked={onUserClicked}
                 />
-                &nbsp;and {`${props.users.length - 1} others`}
+                &nbsp;và {`${props.users.length - 1} người khác`}
                 {
                     props.isHovering && (
                         <div className={classes.user_list_hover}>

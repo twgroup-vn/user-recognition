@@ -86,33 +86,34 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,selectedUsers,mePointsToGive,carrotsPerPost,error,canGiveCustomAmount,canGivePoints,onImpactOpen,onImpactClose,customCurrency,customCompanyIcon
-    const [inputIconOn, setInputIconOn] = useState(false);
+    const { inputIconOn, onInputIconOn, mePointsToGive } = props;
     const [menuOpen, setMenuOpen] = useState(false);
     const [subSelectOpen, setSubSelectOpen] = useState(false);
     const [customImpactModalOpen, setCustomImpactModalOpen] = useState(false);
-    const [impactValueSelector, setImpactValueSelector] = useState('');
+    const [impactValueSelector, setImpactValueSelector] = useState(props.impact);
 
     const classes = useStyles();
 
     //cpndidupdate
-    useEffect(() => {
-        if(impactValueSelector) {
-            setInputIconOn(true)
-        }
-        else {
-            setInputIconOn(false)
-       }
+    // useEffect(() => {
+    //     if(impactValueSelector) {
+    //         onInputIconOn(true)
+    //     }
+    //     else {
+    //         onInputIconOn(false)
+    //    }
 
-    }, [impactValueSelector]);
+    
+    // }, [impactValueSelector, onInputIconOn]);
 
     const placeholder = 'Tặng tim';
-    let maxPointsToGive = props.mePointsToGive;
+    let maxPointsToGive = mePointsToGive;
 
     if( props.selectedUsers.length > 0 ) {
-        maxPointsToGive = Math.floor(props.mePointsToGive / props.selectedUsers.length)
+        maxPointsToGive = Math.floor(mePointsToGive / props.selectedUsers.length)
     }
 
-    const disableSelect = Number(props.mePointsToGive) === 0;
+    const disableSelect = Number(mePointsToGive) === 0;
 
     const filterOptions = props.options.filter((option, index) => {
         if(index > 0) {
@@ -126,7 +127,7 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
 
     const handleOpen = () => {
         props.onImpactOpen();
-        setInputIconOn(true);
+        onInputIconOn(true);
         setMenuOpen(true);
     }
     
@@ -156,11 +157,13 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
     const closeSelect = () => {
         props.onImpactClose();
         setMenuOpen(false);
-        if( props.impact || props.carrots ) {
-            setInputIconOn(true);
+        
+        if( impactValueSelector ) {
+            onInputIconOn(true);
         } else {
-            setInputIconOn(false);
+            onInputIconOn(false);
         }
+        
     };
 
     const openCustomAmountModal = () => {
@@ -177,7 +180,7 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
                 openModal={customImpactModalOpen}
                 closeModal={closeCustomImpactModal}
                 onClick={closeCustomImpactModal}
-                availablePointsToGive={props.mePointsToGive}
+                availablePointsToGive={mePointsToGive}
                 selectedUsers={props.selectedUsers}
                 values={props.options}
                 onImpactSelected={onImpactSelected}
@@ -250,7 +253,7 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
                                 }
                                 let goldSelected = value > 0 ? `${value} ${customCurrencyDisp}` : '';
                                 const total = props.selectedUsers.reduce((sum, user) => sum + parseInt(value, 10), 0);
-                                const remaining = props.mePointsToGive - (total > 0 ? total : value);
+                                const remaining = mePointsToGive - (total > 0 ? total : value);
                                 let excessAlert = false;
 
                                 if(remaining < 0) {
@@ -262,7 +265,7 @@ function ImpactValueSelector(props) {//props: carrots,impact,onChange,options,se
                                             goldSelected = `${total} ${customCurrencyDisp}`;
                                         }
                                         else {
-                                            goldSelected = `${value} ${customCurrencyDisp} each`;
+                                            goldSelected = `${value} ${customCurrencyDisp} mỗi người`;
                                         }
                                     } else {
                                         goldSelected = `${value} ${customCurrencyDisp} each exceeds allowance`;

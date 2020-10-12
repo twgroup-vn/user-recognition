@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { getBadgeObjectForName, getImageForBadge } from '../assets/Util/BadgesInfo';
 import axios from 'axios';
+import { StoreContext } from '../store/StoreContext';
 
 const useStyles = makeStyles((theme) => ({
     right_column_box: {
@@ -64,8 +65,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const token = sessionStorage.getItem('token');
 function TopBadges() {
+    const { token } = React.useContext(StoreContext);
+    const classes = useStyles();
+
+    const [topBadges, setTopBadges] = useState([]);
+
     useEffect(() => {
         axios.get('https://camon.twgroup.vn/api/v1/home/sidebar', {
             headers: {
@@ -76,11 +81,7 @@ function TopBadges() {
         }).then((res) => {
             setTopBadges(res.data.data.top_badges)
         })
-    }, [])
-
-    const classes = useStyles();
-
-    const [topBadges, setTopBadges] = useState([]);
+    }, [token])
 
     const BadgeText = (props) => {
         const badgeObj = getBadgeObjectForName(props.name);

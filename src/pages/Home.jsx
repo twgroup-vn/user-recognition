@@ -22,13 +22,12 @@ const useStyles = makeStyles((theme) => ({
 function Home () {
     const classes = useStyles();
     const [balanceTabToShow, setBalanceTabToShow] = useState(0);
+    const badgeSetStatus = true;
 
     const onHandleTabChange = (tabIndex) => {
         setBalanceTabToShow(tabIndex);
     }
-
-    const badgeSetStatus = true;//setting
-    // const coreValueSetStatus = true;//setting
+    
     return (
         <Container>
             <Row className='position-relative justify-content-start'>
@@ -45,11 +44,9 @@ function Home () {
                     />
                     <TopReceivers />
                     {badgeSetStatus && <TopBadges />}
-                    {/* {coreValueSetStatus && <TopCoreValues />} */}
                 </Col>
             </Row>
         </Container>
-        
     )
 }
 

@@ -1,14 +1,11 @@
-import React, { useRef, useState } from 'react';
-// import Fuse from 'fuse.js';
+import React, { useState } from 'react';
+
 import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-// import {
-//   GIVE_CARROTS_UI_STATUSES,
-//   uiActions,
-//   ADD_EMOJI_STATUS,
-// } from '../../../modules/UI-Reducers/UIReducers';
-import { getter } from '../../assets/Util/object';
 import CustomEditor from '../V2/CustomEditor';
+
+// import Fuse from 'fuse.js';
+// import { getter } from '../../assets/Util/object';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -61,15 +58,14 @@ const useStyles = makeStyles((theme) => ({
 const DIV_ID = 'gr_post_div';
 
 function MessageInput(props) {
-    const [inputIconOn, setInputIconOn] = useState(false);
+    //const [inputIconOn, setInputIconOn] = useState(false);
     const [suggestions, setSuggestions] = useState([]);
-    // const { classes, editorState, error, onAddMention } = this.props;
+    const { inputIconMessageOn, onInputIconMessageOn } = props;
     const [editor, setEditor] = useState();
     const classes = useStyles();
 
     const onFocus = () => {
-        // this.setState({ inputIconOn: true });
-        setInputIconOn(true);
+        onInputIconMessageOn(true);
         editor.focus();
         props.onFocus();
     }
@@ -81,11 +77,11 @@ function MessageInput(props) {
     const onInputBlur = () => {
 
         if(props.hasText) {
-            setInputIconOn(true);
+            onInputIconMessageOn(true);
         }
         
         else {
-            setInputIconOn(false);
+            onInputIconMessageOn(false);
         }
     }
 
@@ -114,7 +110,7 @@ function MessageInput(props) {
             <div className={classes.iconWrapper}>
                 <div className={classNames(
                     classes.iconStyle,
-                    inputIconOn ? classes.iconActiveStyle : classes.iconInactiveStyle
+                    inputIconMessageOn ? classes.iconActiveStyle : classes.iconInactiveStyle
                 )}
                     onClick={onFocus}
                 >

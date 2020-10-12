@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import CarrotIcon from './CarrotIcon';
 import moment from 'moment';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import axios from 'axios';
+import { StoreContext } from '../store/StoreContext';
 
 const useStyles = makeStyles((theme) => ({
     balance_container: {
@@ -66,6 +66,9 @@ function Balance (props) {
     const classes = useStyles();
     let showEarnedBalance = true;
     let showAllowance = true;
+    const { points_earned } = React.useContext(StoreContext);
+    const { remaining_point } = React.useContext(StoreContext);
+
     const { slideIndex, onHandleChange } = props;
     const customCompanyIcon = {
         type: 'emoji',
@@ -96,7 +99,7 @@ function Balance (props) {
                 slideIndex === 0 && (
                     <div className={classes.redeem_container}>
                         <div className={classes.balance_carrots}>
-                            {sessionStorage.getItem('points_earned')}
+                            {points_earned}
                             <CarrotIcon
                                 style={{fontSize: 24, fontFamily: 'Segoe UI Emoji'}}
                                 active
@@ -110,7 +113,7 @@ function Balance (props) {
                     <div className={classes.redeem_container}>
                         <div className={classes.balance_carrots}>
                             <div>
-                                {sessionStorage.getItem('remaining_point')}
+                                {remaining_point}
                             </div>
                             <CarrotIcon
                                 style={{ fontSize: 24, fontFamily: 'Segoe UI Emoji' }}

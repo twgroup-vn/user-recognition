@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -18,6 +18,12 @@ import { getTextFromEditor, getMentionsToReplace } from '../assets/Util/mention'
 import { GIVE_RECOGNITION_HEADER } from '../assets/Util/constants';
 import axios from 'axios';
 import BadgesSelector from './give-carrot/BadgesSelector';
+import { StoreContext } from '../store/StoreContext';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+
 
 const StyledTabs = withStyles({
     root: {
@@ -74,10 +80,6 @@ const useStyles = makeStyles((theme) => ({
         color: '#FFFFFF',
         borderRadius: 4,
         minWidth: 140,
-        // boxShadow: '0px 2px 3px rgba(0, 0, 0, 0.25)',
-        '&$disabled': {
-          boxShadow: 'none',
-        },
         textTransform: 'none',
     },
     gc_button: {
@@ -116,27 +118,53 @@ const impactLevels = [
         label: "🚀",
         value: "above"
     }
-]
+];
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 function PostRecognition (props) {
     const classes = useStyles();
     const [slideIndex, setSlideIndex] = useState(0);
+
+    //form value
     const [selectedBadge, setSelectedBadge] = useState(null);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [carrots, setCarrots] = useState('');
     const [impact, setImpact] = useState('');
+    const [userInputIconOn, setUserInputIconOn] = useState(false);
+    const [inputIconOn, setInputIconOn] = useState(false);
+    const [inputIconMessageOn, setInputIconMessageOn] = useState(false);
+    //end
+
     const [carrotsTouched, setCarrotsTouched] = useState(false);
     const [carrotError, setCarrotError] = useState(null);
-    // const [ internalTourState, setInternalTourState] = useState(null);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [messageError, setMessageError] = useState(null);
     const [isMessageTipsVisible, setIsMessageTipsVisible] = useState(false);
     const [selectedMentions, setSelectedMentions] = useState([]);
     const [isFormSubmitting, setIsFormSubmitting] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    
+    //snackbar MAT
+    const [openMessage, setOpenMessage] = useState(false);
 
-    //token
-    const [token, setToken] = useState('')
+    // const handleClickOpenMessage = () => {
+    //     setOpenMessage(true);
+    // };
 
+    const handleCloseMessage = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpenMessage(false);
+    };
+
+    //store
+    const { token } = React.useContext(StoreContext);
+    
     //hardcode
     const canGivePoints = true;
 
@@ -165,27 +193,6 @@ function PostRecognition (props) {
         }
     }
 
-    /*
-        get TOKEN
-    */
-    useEffect(() => {
-        const queryString = window.location.search;
-
-        const urlParams = new URLSearchParams(queryString);
-
-        const emailLogin = urlParams.get('email')
-
-        axios.post(`https://camon.twgroup.vn/api/v1/auth/user?email=${emailLogin}`)
-        .then((res) =>{
-            setToken(res.data.data.token);
-            //TODO
-            sessionStorage.setItem('id', res.data.data.user.id);
-            sessionStorage.setItem('token', res.data.data.token);
-            sessionStorage.setItem('points_earned', res.data.data.user.points_earned);
-            sessionStorage.setItem('remaining_point', res.data.data.user.remaining_point);
-        })
-    },[])
-
     const handleTabChange = (event, newValue) => {
         setSlideIndex(newValue);
     };
@@ -205,8 +212,8 @@ function PostRecognition (props) {
         return 'Danh hiệu';
     };
 
-    const handleTypeAheadUsers = (selectedUsersProps) => {
-        setSelectedUsers(selectedUsersProps);
+    const handleTypeAheadUsers = (selectedUsers) => {
+        setSelectedUsers(selectedUsers);
     };
 
     const onUserInputFocus = () => {
@@ -216,9 +223,6 @@ function PostRecognition (props) {
         isSet: false,
         value: 25
     }
-    // const onUserInputBlur = () => {
-
-    // }
 
     const onImpactOpen = () => {
         props.switchBalanceTab(1);
@@ -268,7 +272,6 @@ function PostRecognition (props) {
         }
     ]
 
-    
     const shouldDisableGiveButton = () => {
         let giveButtonDisabled = true;
         
@@ -314,6 +317,7 @@ function PostRecognition (props) {
     const onAddBadgeClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -329,8 +333,9 @@ function PostRecognition (props) {
         // const literalMessage = getLiteralTextFromEditor(editorState);
 
         //mapping data
+        
         const giveCarrots = {
-            to: selectedUsers.map((user) => user.id),
+            to: selectedUsers,
             carrots_each: Number(carrots),
             message,
         }
@@ -338,18 +343,7 @@ function PostRecognition (props) {
         if (selectedBadge) {
             giveCarrots.badges = [selectedBadge.name];
         }
-
-        // if(impact) {
-        //     giveCarrots.postImpact = props.impactData.find((item) => item.name === impact)
-        // }
-
-        // this.setState({
-        //     isFormSubmitting: true,
-        //     isRecognitionOpen: false,
-        //     isMessageTipsVisible: false,
-        // });
-
-        console.log(giveCarrots)
+        
         //call API
         axios.post('https://camon.twgroup.vn/api/v1/feed', giveCarrots , {
             headers: {
@@ -358,10 +352,26 @@ function PostRecognition (props) {
                 'Authorization': token
             }
         }).then((res) => {
-            console.log(res.data.data)
-            
+            if (res.data.data) {
+                resetForm();
+                setOpenMessage(true);
+                //temporative reload page
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1000)
+            }
         })
+    }
 
+    const resetForm = () => {
+        setSelectedUsers([]);
+        setCarrots('');
+        setImpact('');
+        setSelectedBadge(null);
+        setUserInputIconOn(false);
+        setInputIconOn(false);
+        setInputIconMessageOn(false);
+        setEditorState(EditorState.createEmpty());
     }
 
     return (
@@ -387,7 +397,9 @@ function PostRecognition (props) {
                         <DSTypeAhead
                             handleUsers={handleTypeAheadUsers}
                             onFocus={onUserInputFocus}
-                            // onBlue={onUserInputBlur}
+                            selectedItem={selectedUsers}
+                            userInputIconOn={userInputIconOn}
+                            onUserInputIconOn={(toggle) => setUserInputIconOn(toggle)}
                         />
                     </div>
                     {
@@ -401,17 +413,19 @@ function PostRecognition (props) {
                                     carrots={carrots}
                                     impact={impact}
                                     onChange={handleImpactValueChange}
-                                    options={impactLevels}//hard
-                                    selectedUsers={selectedUsers}//hard
-                                    mePointsToGive={mePointsToGive}//hard
-                                    carrotsPerPost={carrotsPerPost}//setting
+                                    options={impactLevels}
+                                    selectedUsers={selectedUsers}
+                                    mePointsToGive={mePointsToGive}
+                                    carrotsPerPost={carrotsPerPost}
                                     error={carrotError}
-                                    canGiveCustomAmount={canGiveCustomAmount && canGivePoints}//hard
+                                    canGiveCustomAmount={canGiveCustomAmount && canGivePoints}
                                     canGivePoints={canGivePoints}
                                     onImpactOpen={onImpactOpen}
                                     onImpactClose={onImpactClose}
-                                    customCurrency={customCurrency}//hard
-                                    customCompanyIcon={customCompanyIcon}//hard
+                                    customCurrency={customCurrency}
+                                    customCompanyIcon={customCompanyIcon}
+                                    inputIconOn={inputIconOn}
+                                    onInputIconOn={(toggle) => setInputIconOn(toggle)}
                                 />
                             </div>
                         )
@@ -425,11 +439,13 @@ function PostRecognition (props) {
                             handleMessage={handleMessage}
                             editorState={editorState}
                             error={messageError}
-                            minMessageChar={minMessageChar}//hard
-                            hasText={messageInputHasText}//hard
-                            mentionUsers={mentionUsers}//hard
+                            minMessageChar={minMessageChar}
+                            hasText={messageInputHasText}
+                            mentionUsers={mentionUsers}
                             onAddMention={onAddMention}
                             onFocus={handleMessageInputFocus}
+                            inputIconMessageOn={inputIconMessageOn}
+                            onInputIconMessageOn={(toggle) => setInputIconMessageOn(toggle)}
                         />
                     </div>
                 </div>
@@ -457,34 +473,6 @@ function PostRecognition (props) {
                                 </Tooltip>
                             )
                         }
-                        {/* <Tooltip title="Biểu tượng cảm xúc" placement="top">
-                            <IconButton
-                                className={classes.iconButton}
-                                // onClick={onEmojiClick}
-                                aria-label="Biểu tượng cảm xúc"
-                            >
-                                <EmojiIcon />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Hình ảnh" placement="top">
-                            <IconButton
-                                color="primary"
-                                className={classes.iconButton}
-                                component="span"
-                                aria-label="Hình ảnh"
-                            >
-                                <CameraIcon />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Gif" placement="top">
-                            <IconButton
-                                // onClick={onGifClick}
-                                className={classes.iconButton}
-                                aria-label="Gif"
-                            >
-                                <GifIcon />
-                            </IconButton>
-                        </Tooltip> */}
                     </div>
                     <div className={classes.gc_button}>
                         <Button
@@ -501,6 +489,11 @@ function PostRecognition (props) {
 
                             titleize('gửi lời cảm ơn')}
                         </Button>
+                        <Snackbar open={openMessage} autoHideDuration={2000} onClose={handleCloseMessage}>
+                            <Alert onClose={handleCloseMessage} severity="success">
+                                Bạn đã gửi thành công...
+                            </Alert>
+                        </Snackbar>
                     </div>
                 </div>
                 <Popover

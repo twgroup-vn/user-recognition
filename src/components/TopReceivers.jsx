@@ -7,6 +7,7 @@ import DropdownMenu from '../components/DropdownMenu';
 import { getProfileFullName } from '../assets/Util/text';
 import classNames from 'classnames';
 import axios from 'axios';
+import { StoreContext } from '../store/StoreContext';
 
 const useStyles = makeStyles((theme) => ({
     right_column_box: {
@@ -84,13 +85,13 @@ const StyledButton = withStyles({
     },
 })(Button);
 
-const token = sessionStorage.getItem('token');
 
 function TopReceivers() {
     const classes = useStyles();
     const [topEarnedUsers , setTopEarnedUsers] = useState([])
     const [value, setValue] = useState(1);
     const [anchorEl, setAnchorEl] = useState(null);
+    const { token } = React.useContext(StoreContext);
 
     useEffect(()=> {
         axios.get('https://camon.twgroup.vn/api/v1/home/sidebar', {
@@ -102,7 +103,7 @@ function TopReceivers() {
         }).then((res) => {
             setTopEarnedUsers(res.data.data.top_earned_users)
         })
-    },[])
+    },[token])
 
     const handleOptionClick = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);

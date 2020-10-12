@@ -49,11 +49,11 @@ function CustomImpactModal(props) {
 
     const { availablePoints, maxPointsToGiveText } = maxGivingAllowance();
 
-    const [impact, setImpact] = useState('');
+    //const [impact, setImpact] = useState('');
     const [carrots, setCarrots] = useState('');
     const [invalidValue, setInvalidValue] = useState(false);
     const [formtouched, setFormtouched] = useState(false);
-    const [selectTouched, setSelectTouched] = useState(false);
+    //const [selectTouched, setSelectTouched] = useState(false);
 
     const classes = useStyles();
     

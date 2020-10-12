@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import StoreProvider from './store/StoreContext';
 
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
@@ -80,18 +81,22 @@ const theme = createMuiTheme({
       root: {
         boxShadow: 'none',
         '&:focus': {
-          outline: 'none',
+            outline: 'none'
         },
       },
       containedPrimary: {
         boxShadow: 'none',
         color: '#FFF',
         minWidth: 80,
-        backgroundColor: '#EB6200',
+        backgroundColor: '#FF704C',
         '&:hover': {
           color: '#FFF',
-          backgroundColor: '#F3933C'
+          backgroundColor: '#FF9D78',
+          boxShadow: 'none'
         },
+        '&:focus': {
+            backgroundColor: '#DB4C37'
+        }
       },
       containedSecondary: {
         boxShadow: 'none',
@@ -121,13 +126,15 @@ const theme = createMuiTheme({
 });
 
 ReactDOM.render(
-  <React.StrictMode>
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </MuiThemeProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <MuiThemeProvider theme={theme}>
+            <CssBaseline />
+            <StoreProvider>
+                <App />
+            </StoreProvider>
+        </MuiThemeProvider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 serviceWorker.unregister();
