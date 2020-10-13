@@ -29,7 +29,8 @@ export default ({children}) => {
         token,
         me,
         points_earned,
-        remaining_point
+        remaining_point,
+        setRemainingPoint
     }
 
     return (

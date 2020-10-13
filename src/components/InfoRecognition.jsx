@@ -68,7 +68,7 @@ function Balance (props) {
     let showAllowance = true;
     const { points_earned } = React.useContext(StoreContext);
     const { remaining_point } = React.useContext(StoreContext);
-
+    
     const { slideIndex, onHandleChange } = props;
     const customCompanyIcon = {
         type: 'emoji',

@@ -51,6 +51,7 @@ const theme = createMuiTheme({
         '&:focus': {
           outline: 'none !important',
         },
+        padding: 4
       },
     },
     MuiFormLabel: {

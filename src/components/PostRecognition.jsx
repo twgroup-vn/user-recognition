@@ -1,29 +1,33 @@
 import React, { useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+
+//lib
+import { IconButton, Tooltip, Button, Popover, Tab, Tabs, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import AdjustIcon from '@material-ui/icons/Adjust';
+import { EditorState, convertToRaw } from 'draft-js';
+import axios from 'axios';
 import classNames from 'classnames';
-import { IconButton, Tooltip, Button, Popover } from '@material-ui/core';
-import { titleize } from '../assets/Util/text';
+
 // import EmojiIcon from '@material-ui/icons/InsertEmoticon';
 // import CameraIcon from '@material-ui/icons/AddAPhoto';
 // import GifIcon from '@material-ui/icons/Gif';
-import { getImageForBadge } from '../assets/Util/BadgesInfo';
+
+//give-carrot
 import DSTypeAhead from './give-carrot/DSTypeAhead';
 import ImpactValueSelector from './give-carrot/ImpactValueSelector';
 import MessageInput from './give-carrot/MessageInput';
-import { EditorState, convertToRaw } from 'draft-js';
+import GiveRecognitionTips from './give-carrot/GiveRecognitionTips';
+import BadgesSelector from './give-carrot/BadgesSelector';
+
+//assets
 import { getTextFromEditor, getMentionsToReplace } from '../assets/Util/mention';
 import { GIVE_RECOGNITION_HEADER } from '../assets/Util/constants';
-import axios from 'axios';
-import BadgesSelector from './give-carrot/BadgesSelector';
+import { titleize } from '../assets/Util/text';
+import { getImageForBadge } from '../assets/Util/BadgesInfo';
+
+//store
 import { StoreContext } from '../store/StoreContext';
-
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-
-
 
 const StyledTabs = withStyles({
     root: {
@@ -143,16 +147,14 @@ function PostRecognition (props) {
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [messageError, setMessageError] = useState(null);
     const [isMessageTipsVisible, setIsMessageTipsVisible] = useState(false);
+    const [isRecognitionOpen, setIsRecognitionOpen] = useState(false);
+
     const [selectedMentions, setSelectedMentions] = useState([]);
     const [isFormSubmitting, setIsFormSubmitting] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     
     //snackbar MAT
     const [openMessage, setOpenMessage] = useState(false);
-
-    // const handleClickOpenMessage = () => {
-    //     setOpenMessage(true);
-    // };
 
     const handleCloseMessage = (event, reason) => {
         if (reason === 'clickaway') {
@@ -163,7 +165,7 @@ function PostRecognition (props) {
     };
 
     //store
-    const { token } = React.useContext(StoreContext);
+    const { token, setRemainingPoint } = React.useContext(StoreContext);
     
     //hardcode
     const canGivePoints = true;
@@ -324,6 +326,16 @@ function PostRecognition (props) {
     
     const open = Boolean(anchorEl);
 
+    const handleRecognitionTipsToggle = () => {
+        setIsRecognitionOpen(!isRecognitionOpen);
+    }
+
+    const handleRecognitionTipsToggleKeypress = (event) => {
+        if(event.key === 0) {
+            handleRecognitionTipsToggle()
+        }
+    }
+
     const handleSubmit = (e, values={}) => {
         e.preventDefault();
 
@@ -354,7 +366,11 @@ function PostRecognition (props) {
         }).then((res) => {
             if (res.data.data) {
                 resetForm();
+                //ER-54
+                setRemainingPoint(res.data.data.remaining_point);
+
                 setOpenMessage(true);
+
                 //temporative reload page
                 setTimeout(() => {
                     window.location.reload()
@@ -449,6 +465,17 @@ function PostRecognition (props) {
                         />
                     </div>
                 </div>
+                {
+                    isMessageTipsVisible && (
+                        <div className={classes.p_16}>
+                            <GiveRecognitionTips
+                                isOpen={isRecognitionOpen}
+                                onToggleClick={handleRecognitionTipsToggle}
+                                onToggleKeyPress={handleRecognitionTipsToggleKeypress}
+                            />
+                        </div>
+                    )
+                }
                 <div className="justify-content-end align-items-center" style={{display: 'flex', padding: 14}}>
                     <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                         {
