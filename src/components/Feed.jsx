@@ -6,6 +6,7 @@ import { StoreContext } from '../store/StoreContext';
 function Feed() {
     const [homeFeed, setHomeFeed] = useState([]);
     const { token, me } = React.useContext(StoreContext);
+
     useEffect(() => {
         axios('https://camon.twgroup.vn/api/v1/feed', {
             method: 'get',
@@ -17,7 +18,14 @@ function Feed() {
         }).then((res) => {
             const data = res.data.data.map(card => ({
                 ...card,
-                liked: card.likes.some((user) => user.id === me)
+                liked: card.likes.some((user) => {
+                        if(user.id === me) {
+                            return true
+                        }
+                        return false
+                    }
+                )
+                
             }))
             setHomeFeed(data)
         })

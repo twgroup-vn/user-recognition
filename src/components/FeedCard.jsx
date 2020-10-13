@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import ReactHoverObserver from 'react-hover-observer';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { getter } from '../assets/Util/object';
 import { ProfilePic } from '../assets/Util/profilePic';
 import { getAgoTime } from '../assets/Util/time';
 import { getPostFormattedMessage } from '../assets/Util/text';
+import { getProfileFullName } from '../assets/Util/text';
 import FeedCardTitle, { FeedValue } from './FeedComponent';
 import Card from '@material-ui/core/Card';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,6 +13,10 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import classNames from 'classnames';
 import axios from 'axios';
 import { StoreContext } from '../store/StoreContext';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
 const StyledCard = withStyles({
     root: {
@@ -91,6 +97,32 @@ const useStyles = makeStyles((theme) => ({
     taggedUser: {
         color: 'red',
     },
+    username_clickable_to_span: {
+        color: '#f40',
+        cursor: 'pointer'
+    },
+    users_list_container: {
+        position: 'relative',
+        cursor: 'pointer',
+        color: '#2C2C2C'
+    },
+    users_list_hover : {
+        position: 'absolute',
+        width: 300,
+        top: 20,
+        left: -10,
+        zIndex: 99,
+        borderRadius: 2,
+        fontSize: 14,
+        fontWeight: 400,
+        color: 'rgba(0, 0, 0, 0.87)',
+        backgroundColor: 'white',
+        transition: 'transform 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 250ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+        boxSizing: 'border-box',
+        WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
+        boxShadow: 'rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px',
+        overflowY: 'auto'
+    }
 }));
 
 const renderAvatar = (card) => {
@@ -122,7 +154,6 @@ function FeedCard(props) {
     const feedType = getter(['card', 'type'], card) || 'recognition';
     const [didILike, setDidILike] = useState(card.liked);
     const { token } = React.useContext(StoreContext);
-    
     const onFavouriteClick = () => {
         //callAPI
         axios.get(`https://camon.twgroup.vn/api/v1/feed/${card.id}/like`, {
@@ -136,6 +167,42 @@ function FeedCard(props) {
             setDidILike(!didILike)
 
         })
+    }
+
+    const UserNameComponent = (props) => {
+        const {isHovering, users, onUserClicked} = props;
+        const usersToShow = Array.from(users);
+        const classes = useStyles()
+    
+        const onClick = (user) => {
+            // onUserClicked(user);
+        }
+        
+        return (
+            <div className={classes.users_list_container}>
+                {card.likes.length > 0 && card.likes.length}
+                {
+                    isHovering && (
+                        <div className={classes.users_list_hover}>
+                            <List>
+                                {usersToShow.map((user) => (
+                                    <ListItem
+                                        button
+                                        key={user.id}
+                                        onClick={() => onClick(user)}
+                                    >
+                                        <ListItemAvatar>
+                                            <ProfilePic size={40} user={user} />
+                                        </ListItemAvatar>
+                                        <ListItemText primary={getProfileFullName(user)} />
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </div>
+                    )
+                }
+            </div>
+        )
     }
 
     return (
@@ -192,6 +259,16 @@ function FeedCard(props) {
                             >
                                 <ThumbUpIcon />
                             </IconButton>
+                            {
+                                card.likes.length > 0 && (
+                                    <ReactHoverObserver>
+                                        <UserNameComponent
+                                            users={card.likes}
+                                            // onUserClicked={onUserClicked}
+                                        />
+                                    </ReactHoverObserver>
+                                )
+                            }
                         </div>
                     </div>
                 </div>

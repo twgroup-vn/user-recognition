@@ -54,7 +54,7 @@ const useStyle = makeStyles({
         cursor: 'pointer',
         color: '#2C2C2C'
     },
-    user_list_hover : {
+    users_list_hover : {
         position: 'absolute',
         width: 300,
         top: 20,
@@ -110,6 +110,7 @@ const ClickableUserName = ({ user }) => {
         </p>
     )
 }
+
 function FeedCardTitle(props) {
     const classes = useStyle();
     // const to = props.to.users;
@@ -157,7 +158,7 @@ function FeedCardTitle(props) {
                 &nbsp;và {`${props.users.length - 1} người khác`}
                 {
                     props.isHovering && (
-                        <div className={classes.user_list_hover}>
+                        <div className={classes.users_list_hover}>
                             <List>
                                 {
                                     usersToShow.map((user) => (
