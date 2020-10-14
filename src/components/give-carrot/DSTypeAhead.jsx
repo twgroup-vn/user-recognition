@@ -83,22 +83,6 @@ const useStyles = makeStyles((theme) => ({
         // marginTop : 12,
         // marginBottom : 7,
     },
-    // underline: {
-    //     '&:after': {
-    //       borderBottom: `2px solid ${theme.palette.primary.main}`,
-    //       transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
-    //     },
-    //     '&:before': {
-    //       borderBottom: '1px solid rgb(224, 224, 224)',
-    //     },
-    //     // '&:hover:not($disabled):after': {
-    //     //   borderBottom: '1px solid rgb(224, 224, 224) !important',
-    //     // },
-    //     '&:hover:before': {
-    //       // '&:hover:not($disabled):before':
-    //       borderBottom: '1px solid rgb(224, 224, 224) !important',
-    //     },
-    // },
     menuSelected: {
         backgroundColor: '#F8F8F8 !important',
     },

@@ -25,7 +25,6 @@ function Feed() {
                         return false
                     }
                 )
-                
             }))
             setHomeFeed(data)
         })

@@ -2,20 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export const StoreContext = React.createContext(null);
+const queryString = window.location.search;
+
+const urlParams = new URLSearchParams(queryString);
+
+const emailLogin = urlParams.get('email');
 
 export default ({children}) => {
     const [token, setToken] = useState('');
-    const [me, setMe] = useState('');
+    const [me, setMe] = useState(null);
     const [points_earned, setPointEarned] = useState();
     const [remaining_point, setRemainingPoint] = useState();
 
     useEffect(() => {
-        const queryString = window.location.search;
-
-        const urlParams = new URLSearchParams(queryString);
-
-        const emailLogin = urlParams.get('email')
-
         axios.post(`https://camon.twgroup.vn/api/v1/auth/user?email=${emailLogin}`)
         .then((res) =>{
             setToken(res.data.data.token);
@@ -35,7 +34,7 @@ export default ({children}) => {
 
     return (
         <StoreContext.Provider value={store}>
-            {token ? children : null}
+            { ( token && me ) ? children : null}
         </StoreContext.Provider>
     )
 }

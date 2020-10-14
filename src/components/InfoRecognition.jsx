@@ -1,9 +1,8 @@
 import React from 'react';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import CarrotIcon from './CarrotIcon';
 import moment from 'moment';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { StyledTabs, StyledTab } from '../components/atom/StyledTabs';
 import { StoreContext } from '../store/StoreContext';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,27 +39,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const StyledTabs = withStyles({
-    root: {
-        background: '#f6f6f6'
-    },
-    indicator: {
-      backgroundColor: '#EEEEEE',
-    },
-})(Tabs);
-  
-const StyledTab = withStyles(() => ({
-    root: {
-        textTransform: 'none',
-        color: '#2C2C2C',
-        // fontSize: 16,
-        fontWeight: 'bold',
-        letterSpacing: '.5px',
-        '&:focus': {
-        outline: 'none'
-        },
-    },
-}))((props) => <Tab disableRipple {...props} />);
+;
 
 function Balance (props) {
     const classes = useStyles();

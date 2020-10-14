@@ -1,5 +1,5 @@
 const GIVE_RECOGNITION_HEADER = 'Lời cảm ơn';
-const RECOGNITION_TIPS_HEADER_TEXT = 'Những lời khuyên để lời cảm ơn có ý nghĩa lan tỏa hơn';
+const RECOGNITION_TIPS_HEADER_TEXT = 'Những gợi ý để lời cảm ơn có ý nghĩa lan tỏa hơn';
 const RECOGNITION_TIPS = [
     {
         title: 'Lời mở đầu',
