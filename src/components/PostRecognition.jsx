@@ -247,7 +247,7 @@ function PostRecognition (props) {
 
     const handleMessageInputFocus = () => {
         setIsMessageTipsVisible(true);
-      };
+    };
 
     const onAddMention = (props) => {
         selectedMentions.push(props.id);
@@ -330,12 +330,6 @@ function PostRecognition (props) {
         setIsRecognitionOpen(!isRecognitionOpen);
     }
 
-    const handleRecognitionTipsToggleKeypress = (event) => {
-        if(event.key === 0) {
-            handleRecognitionTipsToggle()
-        }
-    }
-
     const handleSubmit = (e, values={}) => {
         e.preventDefault();
 
@@ -387,6 +381,8 @@ function PostRecognition (props) {
         setUserInputIconOn(false);
         setInputIconOn(false);
         setInputIconMessageOn(false);
+        setIsMessageTipsVisible(false);
+        setIsRecognitionOpen(false);
         setEditorState(EditorState.createEmpty());
     }
 
@@ -471,12 +467,12 @@ function PostRecognition (props) {
                             <GiveRecognitionTips
                                 isOpen={isRecognitionOpen}
                                 onToggleClick={handleRecognitionTipsToggle}
-                                onToggleKeyPress={handleRecognitionTipsToggleKeypress}
+                                // onToggleKeyPress={handleRecognitionTipsToggleKeypress}
                             />
                         </div>
                     )
                 }
-                <div className="justify-content-end align-items-center" style={{display: 'flex', padding: 14}}>
+                <div className="justify-content-end align-items-center" style={{display: 'flex', padding: 8}}>
                     <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                         {
                             badgeAttachability && (

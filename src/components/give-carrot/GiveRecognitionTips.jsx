@@ -13,7 +13,7 @@ import StarIcon from '@material-ui/icons/Star';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        background: ThemeV2.palette.gray2,
+        background: ThemeV2.palette.gray[0],
         borderRadius: 4,
     },
     collapsingHeader: {
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
         outline: 0,
         border: 'none',
         '&:focus': {
-            background: ThemeV2.palette.gray3,
+            background: ThemeV2.palette.gray[20],
         },
     },
     toggleButton: {
@@ -38,13 +38,13 @@ const useStyles = makeStyles((theme) => ({
     tip: {
         display: 'grid',
         gridTemplateColumns: '22px auto',
-        //marginBottom: 12,
+        marginBottom: 8,
         '&:last-child': {
-          //marginTop: 24,
+            // marginTop: 4,
         },
     },
     tipsWrapper: {
-        padding: 1,
+        padding: 12,
     },
     indexHolder: {
         position: 'relative',
@@ -55,10 +55,7 @@ const useStyles = makeStyles((theme) => ({
         width: 44,
     },
     tipIndex: {
-        fontWeight: ThemeV2.typography.fontWeightMedium,
-        color: ThemeV2.palette.gray1,
-        //background: `url(${TextureBG}) no-repeat center`,
-        backgroundSize: 'cover',
+        color: ThemeV2.palette.white[0],
         zIndex: 0,
         '&:after': {
           content: "''",
@@ -70,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
           left: 'auto',
           margin: 'auto',
           transform: 'translateY(-50%)',
-          background: '#87B1FF',
+          background: ThemeV2.palette.blue[60],
           borderRadius: '50%',
           zIndex: -2,
         },
@@ -79,34 +76,25 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: 20,
         paddingTop: 4
     },
-    // expand: {
-    //     transform: 'rotate(0deg)',
-    //     marginLeft: 'auto',
-    //     transition: theme.transitions.create('transform', {
-    //       duration: theme.transitions.duration.shortest,
-    //     }),
-    // },
     expandOpen: {
         transform: 'rotate(-180deg)',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.short,
+        }),
     },
 }))
 
 function GiveRecognitionTips (props) {
-    const { isOpen, onToggleClick, onToggleKeyPress } = props;
-    const [expanded, setExpanded] = useState(isOpen);
-
+    const { isOpen, onToggleClick } = props;
+    
     const classes = useStyles();
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
     return (
         <div className={classes.root}>
             <div
                 className={classes.collapsingHeader}
                 role='button'
                 tabIndex={0}
-                onKeyPress={onToggleKeyPress}
                 onClick={onToggleClick}
             >
                 <Body variant='body2Medium'>
@@ -114,18 +102,17 @@ function GiveRecognitionTips (props) {
                 </Body>
                 <IconButton 
                     className={classes.toggleButton}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
+                    aria-expanded={isOpen}
                     aria-label="show more"
                 >
                     <ExpandMoreIcon 
                         className={
-                            expanded ? classes.expandOpen : ''
+                            isOpen ? classes.expandOpen : ''
                         }
                     />
                 </IconButton>
             </div>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Collapse in={isOpen} timeout="auto" unmountOnExit>
                     <div className={classes.tipsWrapper}>
                         {RECOGNITION_TIPS.map((tip, index) => (
                             <div className={classes.tip} key={index}>
