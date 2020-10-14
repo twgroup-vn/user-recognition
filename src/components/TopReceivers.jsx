@@ -146,19 +146,19 @@ function TopReceivers() {
         return sorted;
     };
 
-    let buttonLabel;
+    // let buttonLabel;
 
-    if (value === 1) {
-      buttonLabel = 'Tháng';
-    }
+    // if (value === 1) {
+    //   buttonLabel = 'Tháng';
+    // }
 
-    else if (value === 2) {
-      buttonLabel = 'Quý';
-    }
+    // else if (value === 2) {
+    //   buttonLabel = 'Quý';
+    // }
 
-    else {
-      buttonLabel = 'Tất cả';
-    }
+    // else {
+    //   buttonLabel = 'Tất cả';
+    // }
 
     const isEmpty = topEarnedUsers.length === 0;
 
@@ -180,7 +180,7 @@ function TopReceivers() {
                 <div className={classes.right_column_header_text}>
                     Cá nhân có sức ảnh hưởng
                 </div>
-                <StyledButton
+                {/* <StyledButton
                     aria-label='Options'
                     aria-owns={anchorEl ? 'menu' : null}
                     aria-haspopup='true'
@@ -221,7 +221,7 @@ function TopReceivers() {
                     >
                         Tất cả
                     </MenuItem>
-                </DropdownMenu>
+                </DropdownMenu> */}
             </div>
             <div className='container' style={{marginTop: '10px'}}>
             {!isEmpty ?

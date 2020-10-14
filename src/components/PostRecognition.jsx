@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 //lib
-import { IconButton, Tooltip, Button, Popover, Tab, Tabs, Snackbar } from '@material-ui/core';
+import { IconButton, Tooltip, Button, Popover, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import AdjustIcon from '@material-ui/icons/Adjust';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, Modifier } from 'draft-js';
 import axios from 'axios';
 import classNames from 'classnames';
 
-// import EmojiIcon from '@material-ui/icons/InsertEmoticon';
-// import CameraIcon from '@material-ui/icons/AddAPhoto';
-// import GifIcon from '@material-ui/icons/Gif';
+//emoji
+import EmojiIcon from '@material-ui/icons/InsertEmoticon';
+import 'emoji-mart/css/emoji-mart.css';
+import { Picker } from 'emoji-mart';
+
+//GIF
+import GifIcon from '@material-ui/icons/Gif';
+import GiphySelect from 'react-giphy-select';
+import 'react-giphy-select/lib/styles.css';
 
 //give-carrot
 import DSTypeAhead from './give-carrot/DSTypeAhead';
@@ -25,31 +31,10 @@ import { getTextFromEditor, getMentionsToReplace } from '../assets/Util/mention'
 import { GIVE_RECOGNITION_HEADER } from '../assets/Util/constants';
 import { titleize } from '../assets/Util/text';
 import { getImageForBadge } from '../assets/Util/BadgesInfo';
+import { StyledTabs, StyledTab } from '../components/atom/StyledTabs';
 
 //store
 import { StoreContext } from '../store/StoreContext';
-
-const StyledTabs = withStyles({
-    root: {
-        background: '#f6f6f6'
-    },
-    indicator: {
-      backgroundColor: '#EEEEEE',
-    },
-})(Tabs);
-
-const StyledTab = withStyles(() => ({
-    root: {
-        textTransform: 'none',
-        color: '#2C2C2C',
-        // fontSize: 16,
-        fontWeight: 'bold',
-        letterSpacing: '.5px',
-        '&:focus': {
-        outline: 'none'
-        }
-    },
-}))((props) => <Tab disableRipple {...props} />);
 
 const useStyles = makeStyles((theme) => ({
     post_container: {
@@ -152,6 +137,8 @@ function PostRecognition (props) {
     const [selectedMentions, setSelectedMentions] = useState([]);
     const [isFormSubmitting, setIsFormSubmitting] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorElEmoji, setAnchorElEmoji] = useState(null);
+    const [anchorElGIF, setAnchorElGIF] = useState(null);
     
     //snackbar MAT
     const [openMessage, setOpenMessage] = useState(false);
@@ -316,15 +303,65 @@ function PostRecognition (props) {
         setAnchorEl(null);
     }
 
+    const addEmoji = (emoji) => {
+
+        const contentState = editorState.getCurrentContent();
+        const targetRange = editorState.getSelection();
+        const newContentState = Modifier.insertText(
+            contentState,
+            targetRange,
+            emoji.native,
+        );
+        const newEditorState = EditorState.push(editorState, newContentState);
+        handleCloseEmoji();
+        setEditorState(newEditorState);
+    }
+
+    
     const onAddBadgeClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
+    const onEmojiClick = (event) => {
+        setAnchorElEmoji(event.currentTarget);
+    }
+
+    const onGIFClick = (event) => {
+        event.preventDefault();
+        setAnchorElGIF(event.currentTarget);
+    }
+
+    const onGIFSelected = (entry) => {
+        let mediaAdded = entry.images.downsized_medium.url;
+
+        if (mediaAdded.length === 0) {
+            mediaAdded = entry.images.original.url;
+        }
+
+        setAnchorElGIF(null);
+
+        // this.setState({
+        //     gifOpen: false,
+        //     mediaAdded,
+        //     mediaType: 'gif',
+        // });
+    }
+
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleCloseEmoji = () => {
+        setAnchorElEmoji(null);
+    };
+
+    const handleCloseGIF = () => {
+        setAnchorElGIF(null);
+    };
     
     const open = Boolean(anchorEl);
+    const openEmoji = Boolean(anchorElEmoji);
+    const openGIF = Boolean(anchorElGIF);
 
     const handleRecognitionTipsToggle = () => {
         setIsRecognitionOpen(!isRecognitionOpen);
@@ -339,7 +376,6 @@ function PostRecognition (props) {
         // const literalMessage = getLiteralTextFromEditor(editorState);
 
         //mapping data
-        
         const giveCarrots = {
             to: selectedUsers,
             carrots_each: Number(carrots),
@@ -467,7 +503,6 @@ function PostRecognition (props) {
                             <GiveRecognitionTips
                                 isOpen={isRecognitionOpen}
                                 onToggleClick={handleRecognitionTipsToggle}
-                                // onToggleKeyPress={handleRecognitionTipsToggleKeypress}
                             />
                         </div>
                     )
@@ -496,6 +531,26 @@ function PostRecognition (props) {
                                 </Tooltip>
                             )
                         }
+                        <Tooltip title="Thêm cảm xúc" placement="top">
+                            <IconButton
+                                className={classes.iconButton}
+                                onClick={onEmojiClick}
+                                onClose={handleCloseEmoji}
+                                aria-label="Thêm cảm xúc"
+                            >
+                                <EmojiIcon />
+                            </IconButton>
+                        </Tooltip>
+                        {/* <Tooltip title="Add Gif" placement="top">
+                            <IconButton
+                                onClick={onGIFClick}
+                                onClose={handleCloseGIF}
+                                className={classes.iconButton}
+                                aria-label="Add Gif"
+                            >
+                                <GifIcon />
+                            </IconButton>
+                        </Tooltip> */}
                     </div>
                     <div className={classes.gc_button}>
                         <Button
@@ -531,6 +586,39 @@ function PostRecognition (props) {
                     <BadgesSelector 
                         updateSelected={(badge) => onUpdateSelectedBadge(badge)}
                         selectedBadge={selectedBadge}
+                    />
+                </Popover>
+                <Popover
+                    open={openEmoji}
+                    anchorEl={anchorElEmoji}
+                    onClose={handleCloseEmoji}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                >
+                    <Picker
+                        onClick={addEmoji}
+                        native={false}
+                        sheetSize={16}
+                        set="google"
+                        title="Pick your emoji…"
+                        emoji="point_up"
+                    />
+                </Popover>
+                <Popover
+                    open={openGIF}
+                    anchorEl={anchorElGIF}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                    onClose={handleCloseGIF}
+                >
+                    <GiphySelect
+                        requestRating='pg-13'
+                        requestKey= 'jAE9Ya0RlClP2vSDqo8umIhz14JYKwy4'
+                        onEntrySelect={onGIFSelected}
                     />
                 </Popover>
             </form>

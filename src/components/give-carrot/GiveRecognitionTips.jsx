@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Body from '../atom/Body';
 import ThemeV2 from '../V2/theme';
@@ -97,7 +97,7 @@ function GiveRecognitionTips (props) {
                 tabIndex={0}
                 onClick={onToggleClick}
             >
-                <Body variant='body2Medium'>
+                <Body variant='body2SemiBold'>
                     {RECOGNITION_TIPS_HEADER_TEXT}
                 </Body>
                 <IconButton 
