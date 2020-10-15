@@ -6,7 +6,7 @@ const queryString = window.location.search;
 
 const urlParams = new URLSearchParams(queryString);
 
-const emailLogin = urlParams.get('email');
+const emailLogin = urlParams.get('email') || sessionStorage.getItem('email');
 
 export default ({children}) => {
     const [token, setToken] = useState('');
@@ -22,7 +22,8 @@ export default ({children}) => {
             setPointEarned(res.data.data.user.points_earned);
             setRemainingPoint(res.data.data.user.remaining_point);
         })
-    },[])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[emailLogin])
 
     const store = {
         token,
