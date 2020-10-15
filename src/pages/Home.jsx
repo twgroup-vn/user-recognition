@@ -29,15 +29,15 @@ function Home () {
     }
     
     return (
-        <Container>
+        <Container fluid>
             <Row className='position-relative justify-content-start align-items-start'>
-                <Col xs={6} md={6} lg={8}>
+                <Col xs={6} md={6} lg={8} style={{padding: 0}}>
                     <PostRecognition
                         switchBalanceTab={onHandleTabChange}
                     />
                     <Feed />
                 </Col>
-                <Col xs={6} md={6} lg={4} className={classes.fixed_right_panel}>
+                <Col xs={6} md={6} lg={4} style={{padding: '0 32px'}} className={classes.fixed_right_panel}>
                     <div>
                         <Balance 
                             slideIndex={balanceTabToShow}

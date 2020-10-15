@@ -3,7 +3,7 @@ const RECOGNITION_TIPS_HEADER_TEXT = 'Những gợi ý để lời cảm ơn có
 const RECOGNITION_TIPS = [
     {
         title: 'Lời mở đầu',
-        body: 'Hãy bắt đầu với “Cảm ơn bạn...” hoặc “Tôi cảm thấy rất phấn khích với...”',
+        body: 'Hãy bắt đầu với “Cảm ơn bạn vì...” hoặc “Tôi cảm thấy rất phấn khích với...”',
     },
     {
         title: 'Nội dung',
@@ -11,7 +11,7 @@ const RECOGNITION_TIPS = [
     },
     {
         title: 'Lời kết thúc',
-        body: 'Kết thúc lời nhắn với một dòng ngắn gọn xúc tích (ví dụ: “Tôi đánh giá rất cao [sự hợp tác] của bạn.” là sự lựa chọn tốt.'
+        body: 'Kết thúc lời nhắn với một dòng ngắn gọn xúc tích (ví dụ: “Tôi đánh giá rất cao [sự hợp tác] của bạn.”) là sự lựa chọn tốt.'
     },
     {
         title: 'Ví dụ',
