@@ -149,8 +149,7 @@ const customCompanyIcon = {
 
 function FeedCard(props) {
     const classes = useStyles();
-    const { card }= props;
-    
+    const [card, setCard] = useState(props.card);
     const feedType = getter(['card', 'type'], card) || 'recognition';
     const [didILike, setDidILike] = useState(card.liked);
     const { token } = React.useContext(StoreContext);
@@ -163,9 +162,8 @@ function FeedCard(props) {
                 'Authorization': token
             }
         }).then((res) => {
-            //setCardState(res.data.data);
-            setDidILike(!didILike)
-
+            setCard(res.data.data);
+            setDidILike(!didILike);
         })
     }
 

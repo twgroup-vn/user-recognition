@@ -4,14 +4,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { makeStyles } from '@material-ui/core/styles';
 import PostRecognition from '../components/PostRecognition';
-import InfoRecognition from '../components/InfoRecognition';
+import Balance from '../components/Balance';
 import Feed from '../components/Feed';
 import TopReceivers from '../components/TopReceivers';
 import TopBadges from '../components/TopBadges';
 
 const useStyles = makeStyles((theme) => ({
     fixed_right_panel: {
-        position: 'fixed',
+        position: 'sticky',
         top: 16,
         right: 0,
         overflowY: 'auto',
@@ -30,20 +30,22 @@ function Home () {
     
     return (
         <Container>
-            <Row className='position-relative justify-content-start'>
-                <Col xs={6} md={6} lg={8} style={{padding: '0px'}}>
+            <Row className='position-relative justify-content-start align-items-start'>
+                <Col xs={6} md={6} lg={8}>
                     <PostRecognition
                         switchBalanceTab={onHandleTabChange}
                     />
                     <Feed />
                 </Col>
-                <Col xs={6} md={6} lg={4} style={{padding: '0 32px'}} className={classes.fixed_right_panel}>
-                    <InfoRecognition 
-                        slideIndex={balanceTabToShow}
-                        onHandleChange={onHandleTabChange}
-                    />
-                    <TopReceivers />
-                    {badgeSetStatus && <TopBadges />}
+                <Col xs={6} md={6} lg={4} className={classes.fixed_right_panel}>
+                    <div>
+                        <Balance 
+                            slideIndex={balanceTabToShow}
+                            onHandleChange={onHandleTabChange}
+                        />
+                        <TopReceivers />
+                        {badgeSetStatus && <TopBadges />}
+                    </div>
                 </Col>
             </Row>
         </Container>

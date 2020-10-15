@@ -2,7 +2,7 @@ import React from 'react';
 import CarrotIcon from './CarrotIcon';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core/styles';
-import { StyledTabs, StyledTab } from '../components/atom/StyledTabs';
+import { StyledTabs, StyledTab } from './atom/StyledTabs';
 import { StoreContext } from '../store/StoreContext';
 
 const useStyles = makeStyles((theme) => ({
@@ -38,8 +38,6 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 12
     }
 }));
-
-;
 
 function Balance (props) {
     const classes = useStyles();

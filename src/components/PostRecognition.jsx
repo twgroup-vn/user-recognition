@@ -424,7 +424,7 @@ function PostRecognition (props) {
 
     return (
         <div className={classes.post_container}>
-            <div style={{overflow: 'hidden', width: 'calc(100% - 1px)'}}>
+            <div style={{cursor: 'none'}}>
                 <StyledTabs
                     centered
                     variant='fullWidth'

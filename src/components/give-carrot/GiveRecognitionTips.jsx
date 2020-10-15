@@ -97,7 +97,7 @@ function GiveRecognitionTips (props) {
                 tabIndex={0}
                 onClick={onToggleClick}
             >
-                <Body variant='body2SemiBold'>
+                <Body variant='body2Medium'>
                     {RECOGNITION_TIPS_HEADER_TEXT}
                 </Body>
                 <IconButton 
